@@ -23,12 +23,12 @@ public class SceneLoader : MonoBehaviour
     [SerializeField, Optional] private VoidEventChannelSO m_LastSceneUnloaded;
 
     // Default loaded scene that serves as the entry point and does not unload
-    private Scene m_BootstrapScene;
+    private UnityEngine.SceneManagement.Scene m_BootstrapScene;
 
     // The previously loaded scene
-    private Scene m_LastLoadedScene;
+    private UnityEngine.SceneManagement.Scene m_LastLoadedScene;
 
-    public Scene BootstrapScene => m_BootstrapScene;
+    public UnityEngine.SceneManagement.Scene BootstrapScene => m_BootstrapScene;
 
     private void OnEnable()
     {
@@ -135,7 +135,7 @@ public class SceneLoader : MonoBehaviour
     }
 
     // Coroutine to unload a specific Scene asynchronously
-    private IEnumerator UnloadScene(Scene scene)
+    private IEnumerator UnloadScene(UnityEngine.SceneManagement.Scene scene)
     {
         if (!m_LastLoadedScene.IsValid())
             yield break;

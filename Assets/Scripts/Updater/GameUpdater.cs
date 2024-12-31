@@ -22,7 +22,7 @@ public class GameUpdater
 
     public void FixedUpdate()
     {
-        if (SSCore.Instance.isPaused)
+        if (Core.Instance.isPaused)
         {
             return;
         }
