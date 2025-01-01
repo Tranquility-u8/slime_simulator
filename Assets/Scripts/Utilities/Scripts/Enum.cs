@@ -68,12 +68,4 @@ public enum StereoType
     LOVE,
 }
 
-public enum Direction
-{
-    NORTH,
-    EAST,
-    SOUTH,
-    WEST
-}
-
 

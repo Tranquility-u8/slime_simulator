@@ -75,11 +75,11 @@ public class Core : Singleton<Core>
         {
             for (int j = 0; j < 10; j++)
             {
-                currentZone.AddBlock(new Block(new Vector3Int(i, j, 0), "Grass", 0));
+                //currentZone.AddBlock(new Block(new Vector3Int(i, j, 0), "Grass", 0));
             }
         }
         
-        currentZone.AddBlock(new Block(new Vector3Int(3, 3, 1), "Grass Dark", 0));
+        //currentZone.AddBlock(new Block(new Vector3Int(3, 3, 1), "Grass Dark", 0));
         
         currentZone.Render();
     }
