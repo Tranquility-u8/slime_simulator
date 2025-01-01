@@ -4,19 +4,25 @@ using UnityEngine;
 
 public class BlockManager : Singleton<BlockManager>
 {
+    #region members
     
     private Dictionary<string, BlockTypeSO> blockTypeDictionary;
 
-    [SerializeField]
-    private BlockTypeSO[] blockTypes;
+    [SerializeField] private BlockTypeSO[] blockTypeDict;
+        
+    #endregion
+
+    #region methods
 
     protected override void Awake()
     {
         base.Awake();
+        
         this.transform.position = new Vector3(0, 0, 0);
         
+        // Init blockTypeDic
         blockTypeDictionary = new Dictionary<string, BlockTypeSO>();
-        foreach (var blockType in blockTypes)
+        foreach (var blockType in blockTypeDict)
         {
             if (!blockTypeDictionary.ContainsKey(blockType.typeName))
             {
@@ -25,16 +31,17 @@ public class BlockManager : Singleton<BlockManager>
         }
     }
     
-    public BlockTypeSO GetBlockTypeDataByName(string name)
+    public BlockTypeSO GetBlockTypeByName(string _name)
     {
         if (blockTypeDictionary.TryGetValue(name, out var blockTypeData))
         {
             return blockTypeData;
         }
-        else
-        {
-            Debug.LogError($"BlockTypeSO with name {name} not found!");
-            return null;
-        }
+        Debug.LogError($"BlockTypeSO with name {name} not found!");
+        return null;
     }
+
+    #endregion
+    
+
 }

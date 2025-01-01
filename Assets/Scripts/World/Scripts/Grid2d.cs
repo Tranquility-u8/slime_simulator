@@ -5,7 +5,7 @@ using UnityEngine;
 using Newtonsoft;
 using Newtonsoft.Json;
 
-public class Grid2d<T> : BaseGrid where T : Cell2d
+public class Grid2d<T> : GridBase where T : Cell2d
 {
     #region members
 
@@ -13,12 +13,22 @@ public class Grid2d<T> : BaseGrid where T : Cell2d
     public string id;
     
     [JsonProperty]
-    List<Grid> children = new List<Grid>();
+    public T[,] grid;
     
     #endregion
     
     #region methods
 
+    public Cell2d getCell(Vector2Int pos)
+    {
+        if (grid == null)
+        {
+            Debug.Log("Grid2d<" + typeof(T).Name + "> grid is null");
+            return null;
+        }
+        return grid[pos.x, pos.y];
+    }
+    
     public static T FindNearestPoint()
     {
         return null as T;

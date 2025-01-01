@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-public class BaseCell
+public class CellBase
 {
     [JsonProperty]
     public int id;

@@ -2,35 +2,53 @@ using UnityEngine;
 using Newtonsoft;
 using Newtonsoft.Json;
 
+
 public class Block : Cell3d
 {
     #region members
     
     [JsonProperty]
-    public string BlockType;
+    public BlockTypeSO blockType;
 
     [JsonProperty]
-    public int direction;
+    public Direction direction;
+    
+    [JsonProperty]
+    public BlockState state;
     
     private SpriteRenderer sr;
     
     public GameObject gameObject;
     
-    
     #endregion
-    
 
     #region methods
-    
-    
 
+    public Block(BlockTypeSO _blockType, int _x, int _y, int _z,  Direction _direction = Direction.North, BlockState _state = BlockState.Normal)
+    {
+        blockType = _blockType;
+        x = _x;
+        y = _y;
+        z = _z;
+        direction = _direction;
+        state = _state;
+    }
+    
+    public Block(string _typename, int _x, int _y, int _z,  Direction _direction = Direction.North, BlockState _state = BlockState.Normal)
+    {
+        blockType = BlockManager.Instance.GetBlockTypeByName(_typename);
+        x = _x;
+        y = _y;
+        z = _z;
+        direction = _direction;
+        state = _state;
+    }
+    
     #endregion
-}
-
-public enum Direction
-{
-    North,
-    East,
-    South,
-    West,
+    
+    public enum BlockState
+    {
+        Normal = 0,
+    }
+    
 }

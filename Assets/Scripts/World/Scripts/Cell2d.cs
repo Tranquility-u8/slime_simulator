@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using UnityEngine;
 
-public class Cell2d : BaseCell
+public class Cell2d : CellBase
 {
     #region members
     
