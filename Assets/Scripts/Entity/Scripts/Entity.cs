@@ -20,9 +20,19 @@ public class Entity
     
     #region methods
     
-    public virtual void Advance()
+    public virtual void Update()
     {
     }
+
+    public virtual void Advance()
+    {
+        
+    }
+
+    public virtual void Render(int _renderSize)
+    {
+        
+    } 
     
     #endregion
 }

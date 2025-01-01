@@ -15,6 +15,9 @@ public class CharacterTypeSO : ScriptableObject
     [Tooltip("Sprite for normal state")]
     public Sprite sprite;
 
+    [JsonProperty]
+    public GameObject prefab;
+    
     [JsonProperty] 
     [Tooltip("Sprite for other state")]
     public List<SpriteDictionaryEntry> spriteEntries = new List<SpriteDictionaryEntry>(); 

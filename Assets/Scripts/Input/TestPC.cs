@@ -2,30 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TestPC : MonoBehaviour
+public class TestPC : Singleton<TestPC>
 {
-    public Transform pc;
-    
-    void Start()
-    {
-        pc = gameObject.GetComponent<Transform>();
-    }
+    private Character pc;
+    private Transform trans;
 
+    public void AssignPC()
+    {
+        pc = Core.Instance.game.activePC;
+        trans = pc.gameObject.transform;
+    }
+    
+    
     void Update()
     {
         switch (SSInput.action)
         {
             case SSAction.AxisLeft:
-                pc.Translate(Vector3.left);
+                ActionHelper.MoveLeft(pc);
+                Core.Instance.game.gameUpdater.charaUpdater.UpdateActionTimer();
                 break;
             case SSAction.AxisRight:
-                pc.Translate(Vector3.right);
+                ActionHelper.MoveRight(pc);
+                Core.Instance.game.gameUpdater.charaUpdater.UpdateActionTimer();
                 break;
             case SSAction.AxisUp:
-                pc.Translate(Vector3.up);
+                ActionHelper.MoveUp(pc);
+                Core.Instance.game.gameUpdater.charaUpdater.UpdateActionTimer();
                 break;
             case SSAction.AxisDown:
-                pc.Translate(Vector3.down);
+                ActionHelper.MoveDown(pc);
+                Core.Instance.game.gameUpdater.charaUpdater.UpdateActionTimer();
                 break;
         }
         

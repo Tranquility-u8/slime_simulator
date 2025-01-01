@@ -3,8 +3,9 @@ using UnityEngine;
 namespace Modern2D
 {
 
-    public class SmoothFollow : MonoBehaviour
+    public class SmoothFollow : Singleton<SmoothFollow>
     {
+        
         [SerializeField] Transform followTarget;
         [SerializeField] Vector3 followOffset;
         [SerializeField] float followSpeed;
@@ -19,6 +20,11 @@ namespace Modern2D
                 var smoothedPosition = new Vector3(Mathf.SmoothStep(transform.position.x, desiredPosition.x, followSpeed * Time.fixedDeltaTime), Mathf.SmoothStep(transform.position.y, desiredPosition.y, followSpeed * Time.fixedDeltaTime), Mathf.SmoothStep(transform.position.z, desiredPosition.z, followSpeed * Time.fixedDeltaTime));
                 transform.position = smoothedPosition;
             }
+        }
+
+        public void SetFollowTarget(Transform target)
+        {
+            followTarget = target;
         }
     }
 

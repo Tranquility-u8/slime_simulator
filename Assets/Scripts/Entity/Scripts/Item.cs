@@ -17,7 +17,7 @@ public class Item : Entity
         itemType = EntityData.Instance.GetItemTypeByName(_name);
     }
     
-    public override void Advance()
+    public override void Update()
     {
     }
 }

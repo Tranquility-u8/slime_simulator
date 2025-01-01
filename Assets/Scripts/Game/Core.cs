@@ -72,27 +72,38 @@ public class Core : Singleton<Core>
         
         this.scene.Init(Scene.SceneType.Zone);
 
-        this.currentZone = game.world.atlases[0]?.zones["Village"];
+        this.currentZone = Game.world.atlases[0]?.zones["Village"];
 
         // Init terrain
         Debug.Log("Create terrain");
-        for (int i = 0; i < 32; i++)
+        for (int i = 0; i < 20; i++)
         {
-            for (int j = 0; j < 32; j++)
+            for (int j = 0; j < 20; j++)
             {
                 this.currentZone.PlaceItem(new Item("Grass", this.currentZone, i, j, 0));
             }
         }
+        this.currentZone.PlaceItem(new Item("Grass", this.currentZone, 4, 3, 1));
+        this.currentZone.PlaceItem(new Item("Grass", this.currentZone, 5, 3, 1));
         
-        // Init PC
+        // Init PC (Slime)
         Debug.Log("Create pc");
-        Character pc = new PC(this.currentZone, 0, 0, 0);
-        
+        Character pc = new PC(this.currentZone, 0, 1, 0);
         this.currentZone.AddCharacter(pc);
         
+        this.game.activePC = pc;
+        
+        // Init witch
+        Debug.Log("Create witch");
+        Character witch = new Character("Witch", this.currentZone, 2, 3, 0);
+        this.currentZone.AddCharacter(witch);
+        
+        // Render zone
         this.currentZone.Render();
         
+        TestPC.Instance.AssignPC();
 
+        pc.Speed = 400f;
     }
 
     private void Update()

@@ -15,16 +15,20 @@ public class Game
     
     public GameUpdater gameUpdater = new GameUpdater();
     
-    [JsonProperty]
-    public World world;
+    public Character activePC;
     
     [JsonProperty]
-    public DateTime dateTime;
+    public static World world;
     
     [JsonProperty]
-    public WeatherType currentWeather;
+    public static DateTime dateTime;
+    
+    [JsonProperty]
+    public static WeatherType currentWeather;
     
     public static float waitTimer;
+    
+    public static float waitTime;
     
     public static bool isPaused;
     
@@ -32,7 +36,7 @@ public class Game
     public static string id;
     
     [JsonProperty]
-    public double backupTime;
+    public static double backupTime;
     
     #endregion
     
@@ -40,7 +44,7 @@ public class Game
 
     public void OnUpdate()
     {
-        this.backupTime += (double)Time.deltaTime;
+        Game.backupTime += (double)Time.deltaTime;
         this.gameUpdater.FixedUpdate();
     }
 

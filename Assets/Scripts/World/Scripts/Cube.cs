@@ -63,7 +63,9 @@ public class Cube : Cell3d
         
         sr = gameObject.AddComponent<SpriteRenderer>();
         sr.sprite = itemInstalled.itemType.sprite;
-        sr.color = new Color(159 / 255.0f, 159 / 255.0f, 159 / 255.0f);
+        sr.sortingOrder = y * -1 + z * 1000 - 5000;
+        float c = (120 + z * 25)/ 255f;
+        sr.color = new Color(c, c, c);
     }
 
     public void Uninstall()

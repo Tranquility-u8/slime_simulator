@@ -88,5 +88,5 @@ Material:
     - _blurDir: {r: 0, g: 0, b: 0, a: 0}
     - _colorMlpRGB: {r: 1, g: 1, b: 1, a: 0}
     - _edgeColor: {r: 0.9716981, g: 0.6551973, b: 0.35292807, a: 0}
-    - _shadowBaseColor: {r: 0, g: 0, b: 0, a: 0}
+    - _shadowBaseColor: {r: 0.07924521, g: 0.07924521, b: 0.07924521, a: 0}
   m_BuildTextureStacks: []

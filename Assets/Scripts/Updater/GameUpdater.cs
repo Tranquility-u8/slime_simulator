@@ -19,7 +19,7 @@ public class GameUpdater
         logicUpdater = new LogicUpdater();
         charaUpdater = new CharaUpdater();
     }
-
+    
     public void FixedUpdate()
     {
         if (Core.Instance.isPaused)

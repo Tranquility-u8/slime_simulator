@@ -14,13 +14,13 @@ public class Zone : Grid3d<Cube>
     private List<GridBase> grids;
     
     [JsonProperty]
-    private Dictionary<string, Character> charactersDict;
+    public Dictionary<string, Character> charactersDict;
     
     #endregion
 
     #region methods
     
-    public Zone(string _name, int _sizeX = 100, int _sizeY = 100, int _sizeZ = 5)
+    public Zone(string _name, int _sizeX = 64, int _sizeY = 64, int _sizeZ = 2)
     {
         name = _name;
         sizeX = _sizeX;
@@ -90,6 +90,7 @@ public class Zone : Grid3d<Cube>
                 for (int k = 0; k < sizeZ; k++)
                 {
                     RenderCube(grid[i, j, k]);
+                    RenderCharacter(grid[i, j, k].Character);
                 }
                             
             }
@@ -100,10 +101,16 @@ public class Zone : Grid3d<Cube>
     private void RenderCube(Cube cube)
     {
         if(!cube.IsInstalled) return;
-        cube.BeforeRender(cube.x * renderSize, cube.y * renderSize);
+        cube.BeforeRender(cube.x * renderSize, (cube.y + 1) * renderSize);
         cube.OnRender();
     }
 
+    private void RenderCharacter(Character character)
+    {
+        if(character == null) return;
+        character.Render(renderSize);
+    }
+    
     public void AddCharacter(Character _character)
     {
         charactersDict = new Dictionary<string, Character>();
