@@ -2,12 +2,12 @@ using UnityEngine;
 using Newtonsoft;
 using Newtonsoft.Json;
 
-public class Block : Cell3d
+public class Tile : Cell2d
 {
     #region members
     
     [JsonProperty]
-    public string BlockType;
+    public string TileType;
 
     [JsonProperty]
     public int direction;
@@ -15,22 +15,6 @@ public class Block : Cell3d
     private SpriteRenderer sr;
     
     public GameObject gameObject;
-    
-    
     #endregion
     
-
-    #region methods
-    
-    
-
-    #endregion
-}
-
-public enum Direction
-{
-    North,
-    East,
-    South,
-    West,
 }

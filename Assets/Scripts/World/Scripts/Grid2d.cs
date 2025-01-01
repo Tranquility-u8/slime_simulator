@@ -5,7 +5,7 @@ using UnityEngine;
 using Newtonsoft;
 using Newtonsoft.Json;
 
-public class Grid<T> where T : Cell
+public class Grid2d<T> : BaseGrid where T : Cell2d
 {
     #region members
 

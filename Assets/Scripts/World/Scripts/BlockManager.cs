@@ -5,17 +5,17 @@ using UnityEngine;
 public class BlockManager : Singleton<BlockManager>
 {
     
-    private Dictionary<string, BlockTypeData> blockTypeDictionary;
+    private Dictionary<string, BlockTypeSO> blockTypeDictionary;
 
     [SerializeField]
-    private BlockTypeData[] blockTypes;
+    private BlockTypeSO[] blockTypes;
 
     protected override void Awake()
     {
         base.Awake();
         this.transform.position = new Vector3(0, 0, 0);
         
-        blockTypeDictionary = new Dictionary<string, BlockTypeData>();
+        blockTypeDictionary = new Dictionary<string, BlockTypeSO>();
         foreach (var blockType in blockTypes)
         {
             if (!blockTypeDictionary.ContainsKey(blockType.typeName))
@@ -25,7 +25,7 @@ public class BlockManager : Singleton<BlockManager>
         }
     }
     
-    public BlockTypeData GetBlockTypeDataByName(string name)
+    public BlockTypeSO GetBlockTypeDataByName(string name)
     {
         if (blockTypeDictionary.TryGetValue(name, out var blockTypeData))
         {
@@ -33,7 +33,7 @@ public class BlockManager : Singleton<BlockManager>
         }
         else
         {
-            Debug.LogError($"BlockTypeData with name {name} not found!");
+            Debug.LogError($"BlockTypeSO with name {name} not found!");
             return null;
         }
     }

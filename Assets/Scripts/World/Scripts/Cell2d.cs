@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using UnityEngine;
 
-public class Cell
+public class Cell2d : BaseCell
 {
     #region members
     
@@ -17,7 +17,7 @@ public class Cell
 
     #region methods
 
-    public Vector2Int GetPositionVec2()
+    public Vector2Int GetPosition()
     {
         return new Vector2Int(x, y);
     }

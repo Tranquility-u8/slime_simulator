@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Zone : Grid<Block>
+public class Zone : Grid3d<Block>
 {
     private Dictionary<Vector3Int, Block> blocks;
 
@@ -15,9 +15,9 @@ public class Zone : Grid<Block>
     
     public void AddBlock(Block block)
     {
-        if (!blocks.ContainsKey(block.GetPositionVec3()))
+        if (!blocks.ContainsKey(block.GetPosition()))
         {
-            blocks.Add(block.GetPositionVec3(), block);
+            blocks.Add(block.GetPosition(), block);
         }
     }
     
