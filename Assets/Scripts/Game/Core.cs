@@ -9,6 +9,7 @@ using UnityEngine.PlayerLoop;
 public class Core : Singleton<Core>
 {
     #region members
+    
     public EventSystem eventSystem;
     
     public CoreConfig coreConfig;
@@ -22,6 +23,7 @@ public class Core : Singleton<Core>
     public float deltaTime;
     
     public bool isPaused = false;
+ 
     public bool IsGameStarted
     {
         get
@@ -65,23 +67,22 @@ public class Core : Singleton<Core>
         
         // Test new game
         this.game = new Game();
+        this.game.StartNewGame();
         
         this.scene.Init(Scene.SceneType.Zone);
-        // TODO: SoundManager init
-        
-        // Test zone
-        currentZone = new Zone();
-        for (int i = 0; i < 10; i++)
+
+        this.currentZone = game.world.atlases[0]?.zones["Village"];
+
+        for (int i = 0; i < 32; i++)
         {
-            for (int j = 0; j < 10; j++)
+            for (int j = 0; j < 32; j++)
             {
-                //currentZone.AddBlock(new Block(new Vector3Int(i, j, 0), "Grass", 0));
+                this.currentZone.PlaceBlock(new Block("Grass",i, j, 0));
             }
         }
+        this.currentZone.Render();
         
-        //currentZone.AddBlock(new Block(new Vector3Int(3, 3, 1), "Grass Dark", 0));
-        
-        currentZone.Render();
+
     }
 
     private void Update()

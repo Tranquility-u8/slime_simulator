@@ -46,7 +46,7 @@ public class Game
 
     public void StartNewGame()
     {
-        
+        world = new World();
     }
     
     #endregion

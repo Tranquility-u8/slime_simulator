@@ -3,15 +3,17 @@ using Newtonsoft.Json;
 
 public abstract class GridBase
 {
-    public virtual void Render(){}
-
+    [JsonProperty]
+    public string name;
+    
     [Header("Render params")]
     [JsonProperty] 
     public Vector2Int renderAnchor = new Vector2Int(0, 0);
     
     [JsonProperty] 
-    public int renderSize = 16;
+    public int renderSize = 1;
     
+    public virtual void Render(){}
 }
 
 public enum Direction

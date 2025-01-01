@@ -1,14 +1,15 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 
 public class BlockManager : Singleton<BlockManager>
 {
     #region members
     
-    private Dictionary<string, BlockTypeSO> blockTypeDictionary;
+    private Dictionary<string, BlockTypeSO> blockTypeDict;
 
-    [SerializeField] private BlockTypeSO[] blockTypeDict;
+    [SerializeField] private BlockTypeSO[] blockTypes;
         
     #endregion
 
@@ -20,20 +21,20 @@ public class BlockManager : Singleton<BlockManager>
         
         this.transform.position = new Vector3(0, 0, 0);
         
-        // Init blockTypeDic
-        blockTypeDictionary = new Dictionary<string, BlockTypeSO>();
-        foreach (var blockType in blockTypeDict)
+        // Init blockTypeDict
+        blockTypeDict = new Dictionary<string, BlockTypeSO>();
+        foreach (var blockType in blockTypes)
         {
-            if (!blockTypeDictionary.ContainsKey(blockType.typeName))
+            if (!blockTypeDict.ContainsKey(blockType.typeName))
             {
-                blockTypeDictionary.Add(blockType.typeName, blockType);
+                blockTypeDict.Add(blockType.typeName, blockType);
             }
         }
     }
     
     public BlockTypeSO GetBlockTypeByName(string _name)
     {
-        if (blockTypeDictionary.TryGetValue(name, out var blockTypeData))
+        if (blockTypeDict.TryGetValue(_name, out var blockTypeData))
         {
             return blockTypeData;
         }

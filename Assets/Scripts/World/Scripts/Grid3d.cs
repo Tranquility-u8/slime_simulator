@@ -8,9 +8,6 @@ using Newtonsoft.Json;
 public class Grid3d<T> : GridBase where T : Cell3d
 {
     #region members
-
-    [JsonProperty]
-    public string id;
     
     [JsonProperty] 
     public int sizeX;

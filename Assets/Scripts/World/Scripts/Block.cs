@@ -46,12 +46,15 @@ public class Block : Cell3d
 
     public void BeforeRender(int _renderX, int _renderY)
     {
+        gameObject = new GameObject();
         gameObject.transform.position = new Vector3Int(_renderX, _renderY, 0);
     }
 
     public void OnRender()
     {
         sr = gameObject.AddComponent<SpriteRenderer>();
+        sr.sprite = blockType.sprite;
+        sr.color = new Color(159 / 255.0f, 159 / 255.0f, 159 / 255.0f);
     }
     
     #endregion

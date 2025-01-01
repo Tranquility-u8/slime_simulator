@@ -19,28 +19,47 @@ public class Zone : Grid3d<Block>
 
     #region methods
     
-    public Zone(int _sizeX = 100, int _sizeY = 100, int _sizeZ = 5)
+    public Zone(string _name, int _sizeX = 100, int _sizeY = 100, int _sizeZ = 5)
     {
+        name = _name;
         sizeX = _sizeX;
         sizeY = _sizeY;
         sizeZ = _sizeZ;
         
         blockContainers = new BlockContainer[_sizeX, _sizeY, _sizeZ];
+        for (int i = 0; i < _sizeX; i++)
+        {
+            for (int j = 0; j < _sizeY; j++)
+            {
+                for (int k = 0; k < _sizeZ; k++)
+                {
+                    blockContainers[i, j, k] = new BlockContainer(null);
+                }
+            }
+        }
     }
     
-    public void TryPlaceBlock(Block _block, int _x, int _y, int _z)
+    public void TryPlaceBlock(Block _block)
     {
+        int _x = _block.x;
+        int _y = _block.y;
+        int _z = _block.z;
+        
         if(!IsValidBlock(_x, _y, _z)) return;
         
         BlockContainer bc = blockContainers[_x, _y, _z];
-        if(!bc.isOccupied)
+        if(bc.IsEmpty)
             bc.Block = _block;
     }
 
-    public void PlaceBlock(Block _block, int _x, int _y, int _z)
+    public void PlaceBlock(Block _block)
     {
-        if(!IsValidBlock(_x, _y, _z)) return;
+        int _x = _block.x;
+        int _y = _block.y;
+        int _z = _block.z;
         
+        if(!IsValidBlock(_x, _y, _z)) return;
+
         BlockContainer bc = blockContainers[_x, _y, _z];
         bc.Block = _block;
     }
@@ -82,6 +101,7 @@ public class Zone : Grid3d<Block>
                             
             }
         }
+        
     }
 
     private void RenderBlock(Block _block)
@@ -93,35 +113,21 @@ public class Zone : Grid3d<Block>
 
     #endregion
 
-    private struct BlockContainer
+    private class BlockContainer
     {
-        public bool isOccupied;
         private Block block;
 
-        public Block Block
-        {
-            set
-            {
-                block = value; 
-                isOccupied = true;
-            }
-            get
-            {
-                if(!isOccupied) return null;
-                return block;
-            }
-        }
+        public Block Block { get; set; }
 
+        public bool IsEmpty => block == null;
+        
         public void Reset()
         {
-            isOccupied = false;
             block = null;
-            // Remember to GC
         }
         
         public BlockContainer(Block block)
         {
-            isOccupied = true;
             this.block = block;
         }
     }

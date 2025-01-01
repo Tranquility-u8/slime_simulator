@@ -17,22 +17,30 @@ public class BlockTypeSO : ScriptableObject
 
     [JsonProperty] 
     [Tooltip("Sprite for other state")]
-    public Dictionary<string, Sprite> sprites = new Dictionary<string, Sprite>();
+    public List<SpriteDictionaryEntry> spriteEntries = new List<SpriteDictionaryEntry>(); 
     
     #endregion
     
     #region methods
 
     public Sprite GetSprite(string _name)  
-    {  
-        if (sprites.TryGetValue(_name, out Sprite sprite1))  
-        {  
-            return sprite1;  
-        }  
-    
+    {
+        foreach (SpriteDictionaryEntry entry in spriteEntries)
+        {
+            if(entry.stateName == _name)
+                return entry.sprite;
+        }
+        
         Debug.LogWarning("Sprite not found: " + _name);  
         return null;  
     }
         
     #endregion    
 }
+
+[System.Serializable]  
+public class SpriteDictionaryEntry  
+{  
+    public string stateName;  
+    public Sprite sprite;  
+} 

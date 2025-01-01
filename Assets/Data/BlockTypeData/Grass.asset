@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeName: Grass
   sprite: {fileID: 1066679591, guid: 6eb831c7e1d73d044b14857c0dab477f, type: 3}
+  spriteEntries: []

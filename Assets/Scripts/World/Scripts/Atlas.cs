@@ -9,12 +9,12 @@ using UnityEngine;
 public class Atlas : Grid2d<Tile>
 {
     #region members
-
-    [JsonProperty]
-    public string name;
     
     [JsonProperty]
     public Vector2 size;
+
+    [JsonProperty]
+    public Dictionary<string, Zone> zones = new Dictionary<string, Zone>();
 
     #endregion
 }

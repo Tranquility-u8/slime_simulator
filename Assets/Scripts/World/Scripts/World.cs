@@ -17,4 +17,21 @@ public class World
     public DateTime history;
 
     #endregion
+
+    #region methods
+
+    public World()
+    {
+        // Test
+        Atlas mainland = new Atlas();
+        atlases = new List<Atlas>();
+        atlases.Add(mainland);
+        
+        Zone village = new Zone("Village");
+        mainland.zones[village.name] = village;
+    }
+    
+
+    #endregion
+    
 }
