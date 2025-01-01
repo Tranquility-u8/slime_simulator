@@ -12,6 +12,15 @@ public class Grid3d<T> : GridBase where T : Cell3d
     [JsonProperty]
     public string id;
     
+    [JsonProperty] 
+    public int sizeX;
+    
+    [JsonProperty] 
+    public int sizeY;
+    
+    [JsonProperty] 
+    public int sizeZ;
+    
     [JsonProperty]
     public T[ , , ] grid;
     
@@ -19,6 +28,11 @@ public class Grid3d<T> : GridBase where T : Cell3d
     
     #region methods
 
+    public override void Render()
+    {
+        
+    }
+    
     public Cell3d getCell(Vector3Int pos)
     {
         if (grid == null)

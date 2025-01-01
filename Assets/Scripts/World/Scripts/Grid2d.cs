@@ -12,6 +12,12 @@ public class Grid2d<T> : GridBase where T : Cell2d
     [JsonProperty]
     public string id;
     
+    [JsonProperty] 
+    public int sizeX;
+
+    [JsonProperty] 
+    public int sizeY;
+    
     [JsonProperty]
     public T[,] grid;
     

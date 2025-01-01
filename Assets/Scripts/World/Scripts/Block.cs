@@ -43,6 +43,16 @@ public class Block : Cell3d
         direction = _direction;
         state = _state;
     }
+
+    public void BeforeRender(int _renderX, int _renderY)
+    {
+        gameObject.transform.position = new Vector3Int(_renderX, _renderY, 0);
+    }
+
+    public void OnRender()
+    {
+        sr = gameObject.AddComponent<SpriteRenderer>();
+    }
     
     #endregion
     
