@@ -66,6 +66,7 @@ public class Core : Singleton<Core>
         this.coreConfig = config;
         
         // Test new game
+        Debug.Log("Create new game");
         this.game = new Game();
         this.game.StartNewGame();
         
@@ -73,13 +74,22 @@ public class Core : Singleton<Core>
 
         this.currentZone = game.world.atlases[0]?.zones["Village"];
 
+        // Init terrain
+        Debug.Log("Create terrain");
         for (int i = 0; i < 32; i++)
         {
             for (int j = 0; j < 32; j++)
             {
-                this.currentZone.PlaceBlock(new Block("Grass",i, j, 0));
+                this.currentZone.PlaceItem(new Item("Grass", this.currentZone, i, j, 0));
             }
         }
+        
+        // Init PC
+        Debug.Log("Create pc");
+        Character pc = new PC(this.currentZone, 0, 0, 0);
+        
+        this.currentZone.AddCharacter(pc);
+        
         this.currentZone.Render();
         
 
@@ -94,7 +104,7 @@ public class Core : Singleton<Core>
         SSInput.deltaTime = this.deltaTime;
         if (IsGameStarted)
         {
-            //this.game.Update();
+            this.game.OnUpdate();
         }
     }
 

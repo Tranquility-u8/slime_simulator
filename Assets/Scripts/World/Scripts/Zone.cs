@@ -6,14 +6,15 @@ using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
 using UnityEngine;
 
-public class Zone : Grid3d<Block>
+public class Zone : Grid3d<Cube>
 {
     #region members
     
     [JsonProperty]
-    private BlockContainer[ , , ] blockContainers;
-    
     private List<GridBase> grids;
+    
+    [JsonProperty]
+    private Dictionary<string, Character> charactersDict;
     
     #endregion
 
@@ -26,42 +27,44 @@ public class Zone : Grid3d<Block>
         sizeY = _sizeY;
         sizeZ = _sizeZ;
         
-        blockContainers = new BlockContainer[_sizeX, _sizeY, _sizeZ];
+        grid = new Cube[_sizeX, _sizeY, _sizeZ];
         for (int i = 0; i < _sizeX; i++)
         {
             for (int j = 0; j < _sizeY; j++)
             {
                 for (int k = 0; k < _sizeZ; k++)
                 {
-                    blockContainers[i, j, k] = new BlockContainer(null);
+                    grid[i, j, k] = new Cube(i, j, k);
                 }
             }
         }
+        
+        charactersDict = new Dictionary<string, Character>();
     }
     
-    public void TryPlaceBlock(Block _block)
+    public void TryPlaceItem(Item _item)
     {
-        int _x = _block.x;
-        int _y = _block.y;
-        int _z = _block.z;
+        int x = _item.location.x;
+        int y = _item.location.y;
+        int z = _item.location.z;
         
-        if(!IsValidBlock(_x, _y, _z)) return;
+        if(!IsValidBlock(x, y, z)) return;
         
-        BlockContainer bc = blockContainers[_x, _y, _z];
-        if(bc.IsEmpty)
-            bc.Block = _block;
+        Cube c = grid[x, y, z];
+        if(!c.IsInstalled)
+            c.ItemInstalled = _item;
     }
 
-    public void PlaceBlock(Block _block)
+    public void PlaceItem(Item _item)
     {
-        int _x = _block.x;
-        int _y = _block.y;
-        int _z = _block.z;
         
-        if(!IsValidBlock(_x, _y, _z)) return;
-
-        BlockContainer bc = blockContainers[_x, _y, _z];
-        bc.Block = _block;
+        int x = _item.location.x;
+        int y = _item.location.y;
+        int z = _item.location.z;
+        
+        if(!IsValidBlock(x, y, z)) return;
+        
+        grid[x, y, z].ItemInstalled = _item;
     }
     
     
@@ -69,7 +72,7 @@ public class Zone : Grid3d<Block>
     {
         if(!IsValidBlock(_x, _y, _z)) return;
         
-        blockContainers[_x, _y, _z].Reset();
+        grid[_x, _y, _z].Uninstall();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]  
@@ -77,26 +80,16 @@ public class Zone : Grid3d<Block>
     {
         return x >= 0 && x < sizeX && y >= 0 && y < sizeY && z >= 0 && z < sizeZ;
     }
-    
-    public Block GetBlock(int _x, int _y, int _z)
-    {
-        if(!IsValidBlock(_x, _y, _z)) return null;
-        
-        return blockContainers[_x, _y, _z].Block;
-    }
-    
+
     public override void Render()
     {
-        base.Render();
-        
         for (int i = 0; i < sizeX; i++)
         {
             for (int j = 0; j < sizeY; j++)
             {
                 for (int k = 0; k < sizeZ; k++)
                 {
-                    BlockContainer bc = blockContainers[i, j, k];
-                    RenderBlock(bc.Block);
+                    RenderCube(grid[i, j, k]);
                 }
                             
             }
@@ -104,31 +97,27 @@ public class Zone : Grid3d<Block>
         
     }
 
-    private void RenderBlock(Block _block)
+    private void RenderCube(Cube cube)
     {
-        if(_block == null) return;
-        _block.BeforeRender(_block.x * renderSize, _block.y * renderSize);
-        _block.OnRender();
+        if(!cube.IsInstalled) return;
+        cube.BeforeRender(cube.x * renderSize, cube.y * renderSize);
+        cube.OnRender();
     }
 
+    public void AddCharacter(Character _character)
+    {
+        charactersDict = new Dictionary<string, Character>();
+        charactersDict[_character.name] = _character;
+        Location location = _character.location;
+        grid[location.x, location.y, location.z].Character = _character;
+    }
+
+    public void removeCharacter(Character _character)
+    {
+        if(charactersDict.ContainsKey(_character.name))
+            charactersDict.Remove(_character.name);
+    }
+    
     #endregion
-
-    private class BlockContainer
-    {
-        private Block block;
-
-        public Block Block { get; set; }
-
-        public bool IsEmpty => block == null;
-        
-        public void Reset()
-        {
-            block = null;
-        }
-        
-        public BlockContainer(Block block)
-        {
-            this.block = block;
-        }
-    }
+    
 }

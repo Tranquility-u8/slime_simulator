@@ -8,6 +8,7 @@ public class Cell3d : CellBase
     
     #region members
     
+    [Header("Position in grid")]
     [JsonProperty]
     public int x;
     
@@ -16,7 +17,7 @@ public class Cell3d : CellBase
     
     [JsonProperty]
     public int z;
-
+    
     #endregion
 
     #region methods

@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-[CreateAssetMenu(fileName = "NewBlockType", menuName = "Block/BlockType")]
+[CreateAssetMenu(fileName = "NewBlockType", menuName = "Cube/BlockType")]
 public class TileTypeSO : ScriptableObject
 {
     [JsonProperty]
