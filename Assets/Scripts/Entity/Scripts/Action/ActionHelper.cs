@@ -1,16 +1,5 @@
 using UnityEngine;
 
-public enum ActionType
-{
-    None,
-    Left = 1,
-    Right,
-    Up,
-    Down,
-    Wait,
-    Attack,
-}
-
 public class ActionHelper
 {
     public static readonly Vector3[] directionVec3 = new Vector3[]
