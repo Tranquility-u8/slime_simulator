@@ -30,7 +30,7 @@ public class Grid3d<T> : GridBase where T : Cell3d
         
     }
     
-    public Cell3d getCell(Vector3Int pos)
+    public Cell3d GetCell(Vector3Int pos)
     {
         if (grid == null)
         {

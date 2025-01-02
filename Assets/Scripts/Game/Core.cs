@@ -16,6 +16,8 @@ public class Core : Singleton<Core>
     
     public Game game;
     
+    public GameUpdater gameUpdater;
+    
     public Scene scene;
     
     public Canvas canvas;
@@ -45,10 +47,10 @@ public class Core : Singleton<Core>
     {
         base.Awake();
         Debug.Log("Core Awake");
-        // TODO: IO init
-        // TODO: Language init
-        // TODO: Variable init
-        // TODO: SteamWork init
+        // TODO: IO Init
+        // TODO: Language Init
+        // TODO: Variable Init
+        // TODO: SteamWork Init
     }
 
     private void Start()
@@ -72,7 +74,7 @@ public class Core : Singleton<Core>
         
         this.scene.Init(Scene.SceneType.Zone);
 
-        this.currentZone = Game.world.atlases[0]?.zones["Village"];
+        this.currentZone = Game.world.atlases[0].zones["Village"];
 
         // Init terrain
         Debug.Log("Create terrain");
@@ -88,22 +90,25 @@ public class Core : Singleton<Core>
         
         // Init PC (Slime)
         Debug.Log("Create pc");
-        Character pc = new PC(this.currentZone, 0, 1, 0);
+        Character pc = new PC(this.currentZone, 3, 1, 1);
         this.currentZone.AddCharacter(pc);
-        
-        this.game.activePC = pc;
         
         // Init witch
         Debug.Log("Create witch");
-        Character witch = new Character("Witch", this.currentZone, 2, 3, 0);
+        Character witch = new Character("Witch", this.currentZone, 4, 2, 1);
         this.currentZone.AddCharacter(witch);
+        
+        // Init paragon
+        Debug.Log("Create paragon");
+        Character paragon = new Character("Paragon", this.currentZone, 1, 1, 1);
+        this.currentZone.AddCharacter(paragon);
         
         // Render zone
         this.currentZone.Render();
         
-        TestPC.Instance.AssignPC();
-
-        pc.Speed = 400f;
+        InputManager.Instance.Init(pc);
+        this.game.Init(pc);
+        this.gameUpdater = this.game.gameUpdater;
     }
 
     private void Update()
@@ -111,11 +116,6 @@ public class Core : Singleton<Core>
         if (this.deltaTime > 0.1f)
         {
             this.deltaTime = 0.1f;
-        }
-        SSInput.deltaTime = this.deltaTime;
-        if (IsGameStarted)
-        {
-            this.game.OnUpdate();
         }
     }
 

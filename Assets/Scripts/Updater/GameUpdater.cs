@@ -5,29 +5,40 @@ using UnityEngine;
 public class GameUpdater
 {
     #region members
-    public ZoneUpdater zoneUpdater;
-    public LogicUpdater logicUpdater;
-    public CharaUpdater charaUpdater;
+
+    private Character pc;
     
-    public static float delta;
+    private ZoneUpdater zoneUpdater;
+    private LogicUpdater logicUpdater;
+    private CharaUpdater charaUpdater;
     
     #endregion
-    
-    public void Reset()
+
+    public GameUpdater(Character _pc)
     {
+        if (_pc == null)
+        {
+            Debug.LogError("Null pc");
+        }
+        pc = _pc;
+        
         zoneUpdater = new ZoneUpdater();
         logicUpdater = new LogicUpdater();
-        charaUpdater = new CharaUpdater();
+        charaUpdater = new CharaUpdater(pc);
     }
     
-    public void FixedUpdate()
+    public void FixedUpdate(int actionPoint = 1)
     {
+        charaUpdater.UpdateCharasActionTimer(actionPoint);
+        
         if (Core.Instance.isPaused)
         {
             return;
         }
+        
         zoneUpdater.FixedUpdate();
         logicUpdater.FixedUpdate();
         charaUpdater.FixedUpdate();
     }
+    
 }

@@ -29,12 +29,11 @@ public class Scene : MonoBehaviour
             // TODO
             break;
         case SceneType.Zone:
-            Core.Instance.game.gameUpdater.Reset();
-            // TODO: Player init
+            // TODO: Player Init
             
-            // TODO: World init
+            // TODO: World Init
             
-            // TODO: Screen and UI init
+            // TODO: Screen and UI Init
             break;
         
         }

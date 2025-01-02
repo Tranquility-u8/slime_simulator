@@ -16,6 +16,11 @@ public class Entity
     [JsonProperty]
     public string name;
     
+    [Header("Generated while gaming")]
+    public GameObject gameObject;
+    
+    public SpriteRenderer sr;
+    
     #endregion
     
     #region methods
@@ -33,6 +38,11 @@ public class Entity
     {
         
     } 
+    
+    public virtual void UpdateSortingOrder()
+    {
+        sr.sortingOrder = location.y * -1 + location.z * 1000 - 5000;
+    }
     
     #endregion
 }

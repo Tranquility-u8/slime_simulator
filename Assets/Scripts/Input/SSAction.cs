@@ -1,41 +1,38 @@
 using System;
 
+/// <summary>
+/// Input => InputMode  
+/// </summary>
 public enum SSAction
 {
-    None,
+    None,           // Invalid action
     
-    AxisUp,
-    AxisDown,
-    AxisLeft,
-    AxisRight,
+    MoveUp = 1,     // Clockwise from north
+    MoveRight,
+    MoveDown,
+    MoveLeft,
     
-    AxisUpLeft,
-    AxisUpRight,
-    AxisDownLeft,
-    AxisDownRight,
+    MoveUpLeft,
+    MoveUpRight,
+    MoveDownLeft,
+    MoveDownRight,
     
-    MouseLeft,
-    MouseMiddle,
-    MouseRight,
+    Wait = 10,
+    Use,            // Use hotItem
+    Chat,           // Chat with sbd
+    Interact,       // Interact with sth
+    Pick,           // Pick up sth
+    Fire,           // Shoot on sbd
     
-    Wait,
-    Use,
-    Chat,
-    Interact,
-    Pick,
-    Fire,
-    Pause,
+    OpenMainMenu = 20,
+    OpenInventory,
+    OpenJournal,
     
-    MenuInventory,
-    MenuChara,
-    MenuJournal,
-    MenuAbility,
-    
-    Confirm,
+    Confirm = 30,
     Cancel,
     Next,
     Prev,
 
-    QuickSave,
+    QuickSave = 40,
     QuickLoad,
 }

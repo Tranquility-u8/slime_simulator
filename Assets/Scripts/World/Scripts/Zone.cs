@@ -89,8 +89,8 @@ public class Zone : Grid3d<Cube>
             {
                 for (int k = 0; k < sizeZ; k++)
                 {
-                    RenderCube(grid[i, j, k]);
-                    RenderCharacter(grid[i, j, k].Character);
+                    Cube cube = grid[i, j, k];
+                    cube.Render(renderSize);
                 }
                             
             }
@@ -98,22 +98,10 @@ public class Zone : Grid3d<Cube>
         
     }
 
-    private void RenderCube(Cube cube)
-    {
-        if(!cube.IsInstalled) return;
-        cube.BeforeRender(cube.x * renderSize, (cube.y + 1) * renderSize);
-        cube.OnRender();
-    }
 
-    private void RenderCharacter(Character character)
-    {
-        if(character == null) return;
-        character.Render(renderSize);
-    }
     
     public void AddCharacter(Character _character)
     {
-        charactersDict = new Dictionary<string, Character>();
         charactersDict[_character.name] = _character;
         Location location = _character.location;
         grid[location.x, location.y, location.z].Character = _character;

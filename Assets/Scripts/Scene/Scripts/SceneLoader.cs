@@ -148,4 +148,11 @@ public class SceneLoader : MonoBehaviour
         }
     }
 
+    public void LoadZone()
+    {
+        LoadScene(1);
+        InputManager.Instance.inputMode = InputMode.Waiting;
+        UIManager.Instance.rootLayer.FindLayer("TitleLayer").Hide();
+    }
+    
 }

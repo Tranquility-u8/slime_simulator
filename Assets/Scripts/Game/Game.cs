@@ -11,11 +11,11 @@ public class Game
 {
     #region members
     
-    public static Game Instance;
+    public bool isInitialized = false; 
     
-    public GameUpdater gameUpdater = new GameUpdater();
+    public GameUpdater gameUpdater;
     
-    public Character activePC;
+    public Character pc;
     
     [JsonProperty]
     public static World world;
@@ -41,9 +41,27 @@ public class Game
     #endregion
     
     #region methods
-
+    
+    public void Init(Character _pc)
+    {
+        if (_pc == null)
+        {
+            Debug.LogWarning("Null pc");
+            return;
+        }
+        
+        gameUpdater = new GameUpdater(_pc);
+        isInitialized = true;
+    }
+    
     public void OnUpdate()
     {
+        if (!isInitialized)
+        {
+            Debug.LogWarning("Game not initialized");
+            return;
+        }
+        
         Game.backupTime += (double)Time.deltaTime;
         this.gameUpdater.FixedUpdate();
     }

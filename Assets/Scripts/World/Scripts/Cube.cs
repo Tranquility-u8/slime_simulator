@@ -10,35 +10,14 @@ public class Cube : Cell3d
 {
     #region members
     
-    [Header("Entity container")]
     [JsonProperty]
     private Item itemInstalled;
-
-    public Item ItemInstalled
-    {
-        get => itemInstalled;
-        set
-        {
-            itemInstalled = value;
-        }
-    }
     
     [JsonProperty]
     private List<Item> itemDropped;
     
     [JsonProperty]
     private Character character;
-    
-    public Character Character
-    {
-        get;
-        set;
-    }
-    
-    [Header("Render")]
-    private SpriteRenderer sr;
-    
-    public GameObject gameObject;
     
     #endregion
 
@@ -49,25 +28,31 @@ public class Cube : Cell3d
         x = _x;
         y = _y;
         z = _z;
+        
+        itemDropped = new List<Item>();
+    }
+
+    public void Render(int renderSize)
+    {
+        RenderInstalledItem(renderSize);
+        RenderCharacter(renderSize);
     }
     
-    public void BeforeRender(int _renderPx, int _renderPy)
+    public void RenderInstalledItem(int renderSize)
     {
-        gameObject = new GameObject();
-        gameObject.transform.position = new Vector3Int(_renderPx, _renderPy, 0);
+        if(!this.IsInstalled) return;
+        this.ItemInstalled.Render(renderSize);
     }
 
-    public void OnRender()
+    public void RenderCharacter(int renderSize)
     {
-        if(!IsInstalled) return;
+        if(!this.IsOccupied) return;
         
-        sr = gameObject.AddComponent<SpriteRenderer>();
-        sr.sprite = itemInstalled.itemType.sprite;
-        sr.sortingOrder = y * -1 + z * 1000 - 5000;
-        float c = (120 + z * 25)/ 255f;
-        sr.color = new Color(c, c, c);
+        Character character = this.Character;
+        if(character == null) return;
+        character.Render(renderSize);
     }
-
+    
     public void Uninstall()
     {
         itemInstalled = null;
@@ -75,7 +60,24 @@ public class Cube : Cell3d
     
     public bool IsInstalled => itemInstalled != null;
 
+    public Item ItemInstalled
+    {
+        get => itemInstalled;
+        set
+        {
+            value.itemState = ItemState.Installed;
+            itemInstalled = value;
+        }
+    }
+    
+    public Character Character
+    {
+        get => character;
+        set => character = value;
+    }
 
+    public bool IsOccupied => character != null;
+    
     #endregion
 
 

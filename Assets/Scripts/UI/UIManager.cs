@@ -8,6 +8,10 @@ using UnityEngine.UI;
 public class UIManager : Singleton<UIManager>
 {
 
+    [SerializeField]
+    public Layer currentLayer;
+    public Layer rootLayer;
+    
     [Header("Inventory")]
     [SerializeField] private GameObject background;
     
@@ -27,8 +31,8 @@ public class UIManager : Singleton<UIManager>
     protected override void Awake()
     {
         base.Awake();
-        DontDestroyOnLoad(this);
-        equipmentContainer = equipmentBar.GetComponentInChildren<ContainerUI>();
+        //DontDestroyOnLoad(this);
+        //equipmentContainer = equipmentBar.GetComponentInChildren<ContainerUI>();
     }
 
     private void Start()

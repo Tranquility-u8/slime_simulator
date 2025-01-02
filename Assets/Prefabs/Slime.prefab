@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6491005232412848523}
   - component: {fileID: 8367575533082292714}
   m_Layer: 0
-  m_Name: 'Slime : shadowPivot'
+  m_Name: shadowPivot
   m_TagString: Shadow
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -110,7 +110,7 @@ GameObject:
   - component: {fileID: 2710511047739531223}
   - component: {fileID: 3729781918115872227}
   m_Layer: 8
-  m_Name: 'Slime : shadow'
+  m_Name: shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -213,7 +213,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.25, y: 1.25, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8427367017549160463}

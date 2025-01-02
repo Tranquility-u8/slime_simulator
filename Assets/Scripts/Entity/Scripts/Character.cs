@@ -7,7 +7,7 @@ public class Character : Entity
 {
     #region members
     
-    public GameObject gameObject;
+    public SpriteRenderer ShadowSr;
     
     [JsonProperty]
     public CharacterTypeSO characterType;
@@ -58,6 +58,7 @@ public class Character : Entity
             actionTimer -= gainActionPoint * actionMaxTime;
             actionTimer = Mathf.Max(actionTimer, 0);
         }
+        Advance();
     }
     
     public override void Advance()
@@ -66,7 +67,7 @@ public class Character : Entity
         for (int i = 0; i < actionPoint; i++)
         {
             Debug.Log("Advance: " + name);
-            ActionHelper.MoveRandom(this);
+            this.MoveRandom();
         }
 
         actionPoint = 0;
@@ -76,7 +77,17 @@ public class Character : Entity
     {
         gameObject = EntityData.Instantiate(characterType.prefab);
         gameObject.transform.position = new Vector3((float)location.x + (float)_renderSize * 0.5f , location.y + (float)_renderSize * 0.5f, 0);
-    } 
+        sr = gameObject.GetComponent<SpriteRenderer>();
+        // Bad code
+        ShadowSr = gameObject.transform.Find("shadowPivot").Find("shadow").GetComponent<SpriteRenderer>();
+        UpdateSortingOrder();
+    }
+    
+    public override void UpdateSortingOrder()
+    {
+        base.UpdateSortingOrder();
+        ShadowSr.sortingOrder = location.y * -1 + location.z * 1000 - 5050;
+    }
     
     public virtual bool IsPC
     {

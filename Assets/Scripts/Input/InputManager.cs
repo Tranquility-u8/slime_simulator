@@ -2,45 +2,64 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class SSInput : MonoBehaviour
+
+/// <summary>
+/// Input => InputMode => SSAction => Input ......
+/// eg: Input: Press "W" => At InputMode: Waiting =>
+/// Conduct SSAction: MoveUp and Set InputMode: Waiting
+/// </summary>
+public class InputManager : Singleton<InputManager>
 {
     #region members
+    
+    private Character pc;
+    private Transform trans;
+    
+    public bool isInitialized = false;
+    
+    [Header("InputMode")]
+    public InputMode inputMode;
+    
+    [Header("SSActions")]
+    public SSAction lastSSAction;
+    
+    public SSAction currentSSAction;
+    
+    [Header("Frame")]
+    public float deltaTime;
 
-    public static SSAction action;
+    [Header("Input: Mouse")]
+    public Vector3 mousePos;
     
-    public static float deltaTime;
+    public Vector3 mousePosWorld;
+    
+    public bool hasMouseMoved;
+    
+    public Vector2 axis;
+    
+    public bool hasAxisMoved;
 
-    public static Vector3 mposMouse;
+    public float wheel;
     
-    public static Vector3 mposWorld;
+    public float dragMargin = 32f;
     
-    public static bool hasMouseMoved;
+    public float clickDuration = 0.3f;
     
-    public static Vector2 axis;
+    public float missClickDuration = 0.3f;
     
-    public static bool hasAxisMoved;
+    [Header("Input: Keyboard")]
+    public bool isAltDown;
+    
+    public bool isCtrlDown;
+    
+    public  bool isShiftDown;
 
-    public static float wheel;
-    
-    public static float dragMargin = 32f;
-    
-    public static float clickDuration = 0.3f;
-    
-    public static float missClickDuration = 0.3f;
+    public int hotkey;
 
-    public static bool isInputFieldActive;
-
-    public static bool isShiftDown;
-    
-    public static bool isCtrlDown;
-    
-    public static bool isAltDown;
-
-    public static int hotkey;
-
-    public static int functionkey;
+    public int functionkey;
     
     #endregion
     
@@ -48,42 +67,57 @@ public class SSInput : MonoBehaviour
 
     public void Update()
     {    
-        SSInput.missClickDuration -= SSInput.deltaTime;
-        SSInput.mposMouse = Input.mousePosition;
-        if (Camera.main)
-        {
-            SSInput.mposWorld = Camera.main.ScreenToWorldPoint(SSInput.mposMouse);
-        }
-        SSInput.mposWorld.z = 0f;
-        
-        SSInput.axis = Vector2.zero;
-        SSInput.hasAxisMoved = (SSInput.hasMouseMoved = false);
-        SSInput.wheel = 0;
-        
-        SSInput.action = SSAction.None;
-        
         if (!Application.isFocused) return;
         
-        EventSystem current = EventSystem.current;
-        GameObject gameObject = (current != null) ? current.currentSelectedGameObject : null;
-        if (gameObject && gameObject.activeInHierarchy)
+        // Input: Mouse
+        Instance.deltaTime = Time.deltaTime;
+        Instance.mousePos = Input.mousePosition;
+        if (Camera.main)
         {
-            SSInput.isInputFieldActive = gameObject.GetComponent<InputField>();
+            Instance.mousePosWorld = Camera.main.ScreenToWorldPoint(Instance.mousePos);
         }
         else
         {
-            SSInput.isInputFieldActive = false;
+            Debug.LogWarning("No main camera found");
         }
+        Instance.mousePosWorld.z = 0f;
+        Instance.hasMouseMoved = false;
+        Instance.wheel = 0;
         
-        SSInput.isShiftDown = (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift));
-        SSInput.isCtrlDown = (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl));
-        SSInput.isAltDown = (Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt));
-        
-        SSInput.hotkey = SSInput.GetHotkeyDown();
-        SSInput.functionkey = SSInput.GetFunctionkeyDown();
-        SSInput.action = SSInput.GetAction();
-    }
+        Instance.axis = Vector2.zero;
+        Instance.hasAxisMoved = false;
 
+        Instance.missClickDuration -= Instance.deltaTime;
+
+        // Input: Keyboard
+        Instance.isAltDown = (Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt));
+        Instance.isCtrlDown = (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl));
+        Instance.isShiftDown = (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift));
+        
+        Instance.hotkey = InputManager.GetHotkeyDown();
+        Instance.functionkey = InputManager.GetFunctionkeyDown();
+
+        // GetAction
+        SSAction newAction = GetAction();
+        if(newAction == SSAction.None) return;
+        
+        lastSSAction = currentSSAction;
+        currentSSAction = newAction;
+        ConductAction(currentSSAction);
+    }
+    
+    public void Init(Character _pc)
+    {
+        if (_pc == null)
+        {
+            Debug.LogWarning("Null pc");
+            return;
+        }
+        pc = _pc;
+        trans = pc.gameObject.transform;
+        isInitialized = true;
+    }
+    
     #endregion
 
     #region helpers
@@ -167,52 +201,100 @@ public class SSInput : MonoBehaviour
         return result;
     }
     
-    private static SSAction GetAction()
+    private SSAction GetAction()
     {
-        string inputString = Input.inputString;
-        
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Return))
         {
-            return SSAction.Wait;
+            return SSAction.Confirm;
         }
-        
-        if (!SSInput.isShiftDown)
+        switch (inputMode)
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                return SSAction.MenuChara;
-            }
-            if (Input.GetKeyDown(KeyCode.Tab))
-            {
-                return SSAction.MenuInventory;
-            }
-            if (Input.GetKeyDown(KeyCode.F6))
-            {
-                return SSAction.QuickSave;
-            }
-            if (Input.GetKeyDown(KeyCode.F7))
-            {
-                return SSAction.QuickLoad;
-            }
-            if(Input.GetKeyDown(KeyCode.W))
-            {
-                return SSAction.AxisUp;
-            }
-            if (Input.GetKeyDown(KeyCode.S))
-            {
-                return SSAction.AxisDown;
-            }
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                return SSAction.AxisLeft;
-            }
-            if (Input.GetKeyDown(KeyCode.D))
-            {
-                return SSAction.AxisRight;
-            }
+            case InputMode.Waiting:
+                if(Input.GetKeyDown(KeyCode.W))
+                {
+                    return SSAction.MoveUp;
+                }
+                if (Input.GetKeyDown(KeyCode.S))
+                {
+                    return SSAction.MoveDown;
+                }
+                if (Input.GetKeyDown(KeyCode.A))
+                {
+                    return SSAction.MoveLeft;
+                }
+                if (Input.GetKeyDown(KeyCode.D))
+                {
+                    return SSAction.MoveRight;
+                }
+                if (Input.GetKeyDown(KeyCode.F6))
+                {
+                    return SSAction.QuickSave;
+                }
+                if (Input.GetKeyDown(KeyCode.F7))
+                {
+                    return SSAction.QuickLoad;
+                }
+
+                if (Input.GetKeyDown(KeyCode.Tab))
+                {
+                    return SSAction.OpenInventory;
+                }
+                break;
+            case InputMode.OnInventory:
+                break;
+            case InputMode.OnJournal:
+                break;
+            case InputMode.OnTitle:
+                if(Input.GetKeyDown(KeyCode.W))
+                {
+                    return SSAction.Prev;
+                }
+                if (Input.GetKeyDown(KeyCode.S))
+                {
+                    return SSAction.Next;
+                }
+                break;
+            case InputMode.OnMainMenu:
+                break;
+            default:
+                break;
         }
         return SSAction.None;
     }
+
+    private void ConductAction(SSAction action)
+    {
+        if (action >= SSAction.MoveUp && action <= SSAction.MoveLeft)
+        {
+            ActionHelper.MoveTowards(pc, (int)action - (int)SSAction.MoveUp);
+            Core.Instance.gameUpdater.FixedUpdate();
+            return;
+        }
+        if (action >= SSAction.Wait && action <= SSAction.Fire)
+        {
+            
+            return;
+        }
+        if (action == SSAction.Prev)
+        {
+            UIManager.Instance.currentLayer.OnPrev();
+            return;
+        }
+        if (action == SSAction.Next)
+        {
+            UIManager.Instance.currentLayer.OnNext();
+            return;
+        }
+
+        if (action == SSAction.Confirm)
+        {
+            UIManager.Instance.currentLayer.OnClick();
+            return;
+        }
+        
+        return;
+    } 
+    
     #endregion
     
     // TODO: Add Custom keyMap
