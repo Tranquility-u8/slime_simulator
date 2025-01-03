@@ -8,13 +8,18 @@ public class Entity
     #region members
     
     [JsonProperty]
-    public Location location;
-    
-    [JsonProperty]
     public int id;
     
     [JsonProperty]
     public string name;
+
+    [Header("Position")] 
+    
+    public Zone zone;
+    
+    public Cube cube;
+    
+    public bool IsOnZone => zone != null;
     
     [Header("Generated while gaming")]
     public GameObject gameObject;
@@ -41,7 +46,7 @@ public class Entity
     
     public virtual void UpdateSortingOrder()
     {
-        sr.sortingOrder = location.y * -1 + location.z * 1000 - 5000;
+        sr.sortingOrder = cube.y * -1 + cube.z * 1000 - 5000;
     }
     
     #endregion

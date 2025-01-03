@@ -42,45 +42,31 @@ public class Zone : Grid3d<Cube>
         charactersDict = new Dictionary<string, Character>();
     }
     
-    public void TryPlaceItem(Item _item)
+    public bool TryPlaceItem(Item item, int x, int y, int z)
     {
-        int x = _item.location.x;
-        int y = _item.location.y;
-        int z = _item.location.z;
-        
-        if(!IsValidBlock(x, y, z)) return;
+        if(!IsValidCell(x, y, z)) return false;
         
         Cube c = grid[x, y, z];
-        if(!c.IsInstalled)
-            c.ItemInstalled = _item;
+        if (c.IsInstalled)
+        {
+            Debug.Log(name + " Already installed");
+            return false;
+        }
+        c.ItemInstalled = item;
+        item.cube = c;
+        return true;
     }
 
-    public void PlaceItem(Item _item)
+    public bool PlaceItem(Item item, int x, int y, int z)
     {
         
-        int x = _item.location.x;
-        int y = _item.location.y;
-        int z = _item.location.z;
+        if(!IsValidCell(x, y, z)) return false;
         
-        if(!IsValidBlock(x, y, z)) return;
-        
-        grid[x, y, z].ItemInstalled = _item;
+        grid[x, y, z].ItemInstalled = item;
+        item.cube = grid[x, y, z];
+        return true;
     }
     
-    
-    public void RemoveBlock(int _x, int _y, int _z)
-    {
-        if(!IsValidBlock(_x, _y, _z)) return;
-        
-        grid[_x, _y, _z].Uninstall();
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]  
-    private bool IsValidBlock(int x, int y, int z)
-    {
-        return x >= 0 && x < sizeX && y >= 0 && y < sizeY && z >= 0 && z < sizeZ;
-    }
-
     public override void Render()
     {
         for (int i = 0; i < sizeX; i++)
@@ -98,13 +84,20 @@ public class Zone : Grid3d<Cube>
         
     }
 
-
-    
-    public void AddCharacter(Character _character)
+    public bool AddCharacter(Character _character, int x, int y, int z)
     {
+         if(!IsValidCell(x, y, z)) return false;
+
+         if (grid[x, y, z].IsInstalled)
+         {
+             Debug.LogWarning("Character already installed");
+             return false;
+         }
         charactersDict[_character.name] = _character;
-        Location location = _character.location;
-        grid[location.x, location.y, location.z].Character = _character;
+        grid[x, y, z].Character = _character;
+        _character.zone = this;
+        _character.cube = grid[x, y, z];
+        return true;
     }
 
     public void removeCharacter(Character _character)

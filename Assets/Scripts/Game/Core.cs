@@ -82,26 +82,26 @@ public class Core : Singleton<Core>
         {
             for (int j = 0; j < 20; j++)
             {
-                this.currentZone.PlaceItem(new Item("Grass", this.currentZone, i, j, 0));
+                this.currentZone.PlaceItem(new Item("Grass"), i, j, 0);
             }
         }
-        this.currentZone.PlaceItem(new Item("Grass", this.currentZone, 4, 3, 1));
-        this.currentZone.PlaceItem(new Item("Grass", this.currentZone, 5, 3, 1));
+        this.currentZone.PlaceItem(new Item("Grass"), 4, 3, 1);
+        this.currentZone.PlaceItem(new Item("Grass"), 5, 3, 1);
         
         // Init PC (Slime)
         Debug.Log("Create pc");
-        Character pc = new PC(this.currentZone, 3, 1, 1);
-        this.currentZone.AddCharacter(pc);
+        Character pc = new PC();
+        this.currentZone.AddCharacter(pc,3, 1, 1);
         
         // Init witch
         Debug.Log("Create witch");
-        Character witch = new Character("Witch", this.currentZone, 4, 2, 1);
-        this.currentZone.AddCharacter(witch);
+        Character witch = new Character("Witch");
+        this.currentZone.AddCharacter(witch, 4, 2, 1);
         
         // Init paragon
         Debug.Log("Create paragon");
-        Character paragon = new Character("Paragon", this.currentZone, 1, 1, 1);
-        this.currentZone.AddCharacter(paragon);
+        Character paragon = new Character("Paragon");
+        this.currentZone.AddCharacter(paragon, 1, 1, 1);
         
         // Render zone
         this.currentZone.Render();

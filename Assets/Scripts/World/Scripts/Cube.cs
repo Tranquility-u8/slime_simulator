@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft;
 using Newtonsoft.Json;
+using NUnit.Framework;
 
 /// <summary>
 /// A virtual unit that represents a cubic space
@@ -53,11 +54,11 @@ public class Cube : Cell3d
         character.Render(renderSize);
     }
     
-    public void Uninstall()
+    public override bool IsEmpty()
     {
-        itemInstalled = null;
+        return !IsInstalled;
     }
-    
+
     public bool IsInstalled => itemInstalled != null;
 
     public Item ItemInstalled

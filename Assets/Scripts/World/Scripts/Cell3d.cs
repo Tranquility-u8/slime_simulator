@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
 using UnityEngine;
 
@@ -27,6 +28,11 @@ public class Cell3d : CellBase
         return new Vector3Int(x, y, z);
     }
     
+    public virtual bool IsEmpty()
+    {
+        throw new System.NotImplementedException();
+    }
 
+    
     #endregion
 }

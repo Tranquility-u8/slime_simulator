@@ -11,9 +11,8 @@ public class Item : Entity
     [JsonProperty]
     public ItemState itemState;
     
-    public Item(string _name, Zone _zone, int _x, int _y, int _z)
+    public Item(string _name)
     {
-        location = new Location(_zone, _x, _y, _z);
         itemType = EntityData.Instance.GetItemTypeByName(_name);
     }
     
@@ -22,11 +21,11 @@ public class Item : Entity
 
         gameObject = new GameObject();
         gameObject.transform.SetParent(EntityData.Instance.transform);
-        gameObject.transform.position = new Vector3Int(location.x * _renderSize, (location.y + 1) * _renderSize, 0);
+        gameObject.transform.position = new Vector3Int(cube.x * _renderSize, (cube.y + 1) * _renderSize, 0);
         
         sr = gameObject.AddComponent<SpriteRenderer>();
         sr.sprite = itemType.sprite;
-        float c = (120 + location.z * 25)/ 255f;
+        float c = (120 + cube.z * 25)/ 255f;
         sr.color = new Color(c, c, c);
         
         UpdateSortingOrder();

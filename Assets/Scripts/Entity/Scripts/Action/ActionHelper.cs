@@ -2,23 +2,24 @@ using UnityEngine;
 
 public static class ActionHelper
 {
-    public static readonly Vector3[] directionVec3 = new Vector3[] 
+    public static readonly Vector3Int[] DirectionVec3 = new Vector3Int[] 
     {
-        new Vector3(0, 1, 0),
-        new Vector3(1, 0, 0),
-        new Vector3(0, -1, 0),
-        new Vector3(-1, 0, 0),
+        new Vector3Int(0, 1, 0),
+        new Vector3Int(1, 0, 0),
+        new Vector3Int(0, -1, 0),
+        new Vector3Int(-1, 0, 0),
     };  // Clockwise from north
         
     public static void MoveRandom (this Character character)
     {
-        character.gameObject.transform.Translate(directionVec3[Random.Range(0, 3)]);
+        int dir = Random.Range(0, 3);
+        character.gameObject.transform.Translate(DirectionVec3[dir]);
         character.UpdateSortingOrder();
     }
 
     public static void MoveTowards(this Character character, int direction)
     {
-        character.gameObject.transform.Translate(directionVec3[direction % 4]);
+        character.gameObject.transform.Translate(DirectionVec3[direction % 4]);
         character.UpdateSortingOrder();
     }
     

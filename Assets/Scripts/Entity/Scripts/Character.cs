@@ -38,10 +38,9 @@ public class Character : Entity
 
     #region methods
     
-    public Character(string _name, Zone _zone, int _x, int _y, int _z)
+    public Character(string _name)
     {
         name = _name;
-        location = new Location(_zone, _x, _y, _z);
         characterType = EntityData.Instance.GetCharacterTypeByName(_name);
         speed = 100f;
         actionTimer = 0f;
@@ -76,7 +75,7 @@ public class Character : Entity
     public override void Render(int _renderSize)
     {
         gameObject = EntityData.Instantiate(characterType.prefab);
-        gameObject.transform.position = new Vector3((float)location.x + (float)_renderSize * 0.5f , location.y + (float)_renderSize * 0.5f, 0);
+        gameObject.transform.position = new Vector3((float)cube.x + (float)_renderSize * 0.5f , cube.y + (float)_renderSize * 0.5f, 0);
         sr = gameObject.GetComponent<SpriteRenderer>();
         // Bad code
         ShadowSr = gameObject.transform.Find("shadowPivot").Find("shadow").GetComponent<SpriteRenderer>();
@@ -86,7 +85,7 @@ public class Character : Entity
     public override void UpdateSortingOrder()
     {
         base.UpdateSortingOrder();
-        ShadowSr.sortingOrder = location.y * -1 + location.z * 1000 - 5050;
+        ShadowSr.sortingOrder = cube.y * -1 + cube.z * 1000 - 5050;
     }
     
     public virtual bool IsPC

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using Newtonsoft;
 using Newtonsoft.Json;
@@ -43,6 +44,31 @@ public class Grid3d<T> : GridBase where T : Cell3d
     {
         return null as T;
     }
+    
+    public bool IsNearEmpty(Cell3d cell, int direction)
+    {
+        Vector3Int target = cell.GetPosition() + ActionHelper.DirectionVec3[(int)direction];
+        if(IsValidCell(target)) return true;
+
+        return false;
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]  
+    public bool IsValidCell(int x, int y, int z)
+    {
+        if(x >= 0 && x < sizeX && y >= 0 && y < sizeY && z >= 0 && z < sizeZ) return true;
+        Debug.LogWarning("Invalid block position");
+        return false;
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]  
+    public bool IsValidCell(Vector3Int pos)
+    {
+        if(pos.x >= 0 && pos.x < sizeX && pos.y >= 0 && pos.y < sizeY && pos.z >= 0 && pos.z < sizeZ) return true;
+        Debug.LogWarning("Invalid block position");
+        return false;
+    }
+    
     
     #endregion
 }
