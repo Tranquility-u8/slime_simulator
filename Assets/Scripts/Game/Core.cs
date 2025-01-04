@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using NUnit.Framework.Internal;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.LowLevel;
 using UnityEngine.PlayerLoop;
+using Logger = UnityEngine.Logger;
 
 public class Core : Singleton<Core>
 {
@@ -36,8 +38,6 @@ public class Core : Singleton<Core>
     public bool isLoading;
     
     public World world;
-    
-    public Zone currentZone;
 
     #endregion
     
@@ -72,9 +72,7 @@ public class Core : Singleton<Core>
         this.game = new Game();
         this.game.StartNewGame();
         
-        this.scene.Init(Scene.SceneType.Zone);
-
-        this.currentZone = Game.world.atlases[0].zones["Village"];
+        this.game.CurrentZone = game.World.atlases[0].zones["Village"];
 
         // Init terrain
         Debug.Log("Create terrain");
@@ -82,33 +80,40 @@ public class Core : Singleton<Core>
         {
             for (int j = 0; j < 20; j++)
             {
-                this.currentZone.PlaceItem(new Item("Grass"), i, j, 0);
+                this.game.CurrentZone.PlaceItem(new Item("Grass"), i, j, 0);
             }
         }
-        this.currentZone.PlaceItem(new Item("Grass"), 4, 3, 1);
-        this.currentZone.PlaceItem(new Item("Grass"), 5, 3, 1);
+        this.game.CurrentZone.PlaceItem(new Item("Grass"), 4, 3, 1);
+        this.game.CurrentZone.PlaceItem(new Item("Grass"), 5, 3, 1);
         
         // Init PC (Slime)
         Debug.Log("Create pc");
         Character pc = new PC();
-        this.currentZone.AddCharacter(pc,3, 1, 1);
+        this.game.CurrentZone.AddCharacter(pc,4, 1, 1);
+
+        pc.Speed = 150;
         
         // Init witch
+        /*
         Debug.Log("Create witch");
         Character witch = new Character("Witch");
         this.currentZone.AddCharacter(witch, 4, 2, 1);
+        */
         
         // Init paragon
         Debug.Log("Create paragon");
         Character paragon = new Character("Paragon");
-        this.currentZone.AddCharacter(paragon, 1, 1, 1);
+        paragon.AI = new AI_Monster();
+        this.game.CurrentZone.AddCharacter(paragon, 1, 1, 1);
         
         // Render zone
-        this.currentZone.Render();
+        this.game.CurrentZone.Render();
         
         InputManager.Instance.Init(pc);
         this.game.Init(pc);
-        this.gameUpdater = this.game.gameUpdater;
+        
+        this.gameUpdater = this.game.GameUpdater;
+
     }
 
     private void Update()
@@ -117,8 +122,68 @@ public class Core : Singleton<Core>
         {
             this.deltaTime = 0.1f;
         }
+        Test();
     }
 
+    public void Test()
+    {
+        if (Input.GetKeyDown(KeyCode.F6))
+        {
+                SaveGame();
+        }
+        if (Input.GetKeyDown(KeyCode.F7))
+        {
+                LoadGame();
+        }
+    }
+    
+    
+    public void SaveGame()
+    {
+        if (this.game == null)
+        {
+            Debug.LogWarning("Game is null");
+            return;
+        }
+        ES3.Save("test", this.game, "SaveFile.es3" );
+        Debug.Log("Save game");
+    }
+
+    public void LoadGame()
+    {
+        ClearGameView(this.game);
+        Game newGame = (Game)ES3.Load("test", game);
+        if (game != null)
+        {
+            Debug.Log("Load game");
+            this.game.UpdateView(); 
+        }
+    }
+
+    public void ClearGameView(Game _game)
+    {
+        Zone _zone = _game.CurrentZone;
+        foreach (var term in _zone.charactersDict)
+        {
+            Destroy(term.Value.gameObject);
+        }
+
+        
+        for (int i = 0; i < _zone.sizeX; i++)
+        {
+            for (int j = 0; j < _zone.sizeY; j++)
+            {
+                for (int k = 0; k < _zone.sizeZ; k++)
+                {
+                    Cube cube = _zone.grid[i, j, k];
+                    if(cube.IsInstalled)
+                        Destroy(cube.ItemInstalled.gameObject);
+                }
+                            
+            }
+        }
+    }
+    
     public void WaitForEndOfFrame(Action action)
     {
         base.StartCoroutine(this._WaitForEndOfFrame(action));

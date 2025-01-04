@@ -7,6 +7,17 @@ public class Character : Entity
 {
     #region members
     
+    protected AIBase ai;
+
+    public AIBase AI
+    {
+        set
+        {
+            value.owner = this;
+            ai = value;
+        }
+    }
+    
     public SpriteRenderer ShadowSr;
     
     [JsonProperty]
@@ -40,6 +51,7 @@ public class Character : Entity
     
     public Character(string _name)
     {
+        this.AI = new AIBase();
         name = _name;
         characterType = EntityData.Instance.GetCharacterTypeByName(_name);
         speed = 100f;
@@ -65,26 +77,23 @@ public class Character : Entity
         if(actionPoint <= 0) return;
         for (int i = 0; i < actionPoint; i++)
         {
-            Debug.Log("Advance: " + name);
-            this.MoveRandom();
+            ai.Execute();
         }
-
         actionPoint = 0;
     }
     
     public override void Render(int _renderSize)
     {
         gameObject = EntityData.Instantiate(characterType.prefab);
-        gameObject.transform.position = new Vector3((float)cube.x + (float)_renderSize * 0.5f , cube.y + (float)_renderSize * 0.5f, 0);
         sr = gameObject.GetComponent<SpriteRenderer>();
-        // Bad code
-        ShadowSr = gameObject.transform.Find("shadowPivot").Find("shadow").GetComponent<SpriteRenderer>();
-        UpdateSortingOrder();
+        ShadowSr = gameObject.transform.Find("shadowPivot").Find("shadow").GetComponent<SpriteRenderer>();   // Bad code
+        
+        UpdateSprite(_renderSize);
     }
     
-    public override void UpdateSortingOrder()
+    protected override void UpdateSpriteSortingOrder()
     {
-        base.UpdateSortingOrder();
+        base.UpdateSpriteSortingOrder();
         ShadowSr.sortingOrder = cube.y * -1 + cube.z * 1000 - 5050;
     }
     

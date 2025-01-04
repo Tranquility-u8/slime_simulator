@@ -10,40 +10,71 @@ public static class ActionHelper
         new Vector3Int(-1, 0, 0),
     };  // Clockwise from north
         
-    public static void MoveRandom (this Character character)
+    public static void MoveRandom(this Character character)
     {
         int dir = Random.Range(0, 3);
-        character.gameObject.transform.Translate(DirectionVec3[dir]);
-        character.UpdateSortingOrder();
+        Vector3Int vec = DirectionVec3[dir];
+        //character.gameObject.transform.Translate(DirectionVec3[dir]);
+        character.zone.MoveCharacterTo(character, character.cube.GetPosition() + vec);
+        character.UpdateSprite();
     }
 
     public static void MoveTowards(this Character character, int direction)
     {
-        character.gameObject.transform.Translate(DirectionVec3[direction % 4]);
-        character.UpdateSortingOrder();
+        character.zone.MoveCharacterTo(character, character.cube.GetPosition() + DirectionVec3[direction % 4]);
+        character.UpdateSprite();
+    }
+    
+    public static void MoveTowardsTarget(this Character character, Character target)
+    {
+        int dx = target.cube.x - character.cube.x;
+        int dy = target.cube.y - character.cube.y;
+
+        if (Mathf.Abs(dx) > Mathf.Abs(dy))
+        {
+            if (dx > 0)
+            {
+                MoveRight(character);
+            }
+            else
+            {
+                MoveLeft(character);
+            }
+        }
+        else
+        {
+            if (dy > 0)
+            {
+                MoveUp(character);
+            }
+            else
+            {
+                MoveDown(character);
+            }
+        }
     }
     
     public static void MoveLeft(this Character character)
     {
-        character.gameObject.transform.Translate(Vector3.left);
-        character.UpdateSortingOrder();
+        character.zone.MoveCharacterTo(character, character.cube.GetPosition() + Vector3Int.left);
+        character.UpdateSprite();
     }
     
     public static void MoveRight(this Character character)
     {
-        character.gameObject.transform.Translate(Vector3.right);
-        character.UpdateSortingOrder();
+        character.zone.MoveCharacterTo(character, character.cube.GetPosition() + Vector3Int.right);
+        character.UpdateSprite();
     }
     
     public static void MoveUp(this Character character)
     {
-        character.gameObject.transform.Translate(Vector3.up);
-        character.UpdateSortingOrder();
+        character.zone.MoveCharacterTo(character, character.cube.GetPosition() + Vector3Int.up);
+        character.UpdateSprite();
     }
     
     public static void MoveDown(this Character character)
     {
-        character.gameObject.transform.Translate(Vector3.down);
-        character.UpdateSortingOrder();
+        character.zone.MoveCharacterTo(character, character.cube.GetPosition() + Vector3Int.down);
+        character.UpdateSprite();
     }
 }

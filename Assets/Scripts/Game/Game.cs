@@ -1,42 +1,47 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using Newtonsoft.Json;
 
 public class Game
 {
     #region members
     
-    public bool isInitialized = false; 
+    [JsonIgnore]
+    public bool IsInitialized { get; set; }
     
-    public GameUpdater gameUpdater;
+    [JsonIgnore]
+    public GameUpdater GameUpdater { get; private set; }
     
-    public Character pc;
+    [JsonIgnore]
+    public Character PC { get; set; }
     
-    [JsonProperty]
-    public static World world;
+    public World World { get; private set; }
     
-    [JsonProperty]
-    public static DateTime dateTime;
+    public Zone CurrentZone { get; set; }
     
-    [JsonProperty]
-    public static WeatherType currentWeather;
+    public DateTime Date { get; set; }
     
-    public static float waitTimer;
+    public WeatherType currentWeather;
     
-    public static float waitTime;
+    [JsonIgnore]
+    public float WaitTimer { get; private set; }
     
-    public static bool isPaused;
+    [JsonIgnore]
+    public float WaitTime { get; private set; }
     
-    [JsonProperty]
-    public static string id;
+    [JsonIgnore]
+    public bool IsPaused { get; private set; }
     
-    [JsonProperty]
-    public static double backupTime;
+    public string Id { get; set; }
+    
+    public float BackupTime { get; private set; }
+    
+    public List<int> list = new List<int>(){1,2,3,4,5,6,7,8,9,10,11};
     
     #endregion
     
@@ -50,38 +55,41 @@ public class Game
             return;
         }
         
-        gameUpdater = new GameUpdater(_pc);
-        isInitialized = true;
+        GameUpdater = new GameUpdater(_pc);
+        IsInitialized = true;
+    }
+
+    public void OnLoad(Character _pc)
+    {
+        GameUpdater = new GameUpdater(_pc);
+        IsInitialized = true;
     }
     
     public void OnUpdate()
     {
-        if (!isInitialized)
+        if (!IsInitialized)
         {
             Debug.LogWarning("Game not initialized");
             return;
         }
         
-        Game.backupTime += (double)Time.deltaTime;
-        this.gameUpdater.FixedUpdate();
+        this.BackupTime += Time.deltaTime;
+        this.GameUpdater.FixedUpdate();
     }
-
+    
     public void StartNewGame()
     {
-        world = new World();
+        World = new World();
+    }
+    
+    
+    public void UpdateView()
+    {
+        this.CurrentZone.Render();
     }
     
     #endregion
 
-}
-
-[Serializable]
-public class DateTime
-{
-    public int year;
-    public int month;
-    public int day;
-    public int hour;
 }
 
 public enum SeasonType{
@@ -96,11 +104,11 @@ public static class Season
 {
     public static SeasonType GetSeasonType(DateTime date)
     {
-        if(date.month >= 1 && date.month <= 3)
+        if(date.Month >= 1 && date.Month <= 3)
             return SeasonType.Spring;
-        if(date.month >= 4 && date.month <= 6)
+        if(date.Month >= 4 && date.Month <= 6)
             return SeasonType.Summer;
-        if(date.month >= 7 && date.month <= 9)
+        if(date.Month >= 7 && date.Month <= 9)
             return SeasonType.Autumn;
         
         return SeasonType.Winter;

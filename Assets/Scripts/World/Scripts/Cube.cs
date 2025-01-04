@@ -66,6 +66,7 @@ public class Cube : Cell3d
         get => itemInstalled;
         set
         {
+            value.cube = this;
             value.itemState = ItemState.Installed;
             itemInstalled = value;
         }
@@ -74,7 +75,12 @@ public class Cube : Cell3d
     public Character Character
     {
         get => character;
-        set => character = value;
+        set
+        {
+            character = value;
+            if (value != null)
+                value.cube = this;
+        }
     }
 
     public bool IsOccupied => character != null;

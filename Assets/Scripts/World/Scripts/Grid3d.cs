@@ -57,7 +57,7 @@ public class Grid3d<T> : GridBase where T : Cell3d
     public bool IsValidCell(int x, int y, int z)
     {
         if(x >= 0 && x < sizeX && y >= 0 && y < sizeY && z >= 0 && z < sizeZ) return true;
-        Debug.LogWarning("Invalid block position");
+        //Debug.LogWarning("Invalid block position");
         return false;
     }
     
@@ -65,10 +65,14 @@ public class Grid3d<T> : GridBase where T : Cell3d
     public bool IsValidCell(Vector3Int pos)
     {
         if(pos.x >= 0 && pos.x < sizeX && pos.y >= 0 && pos.y < sizeY && pos.z >= 0 && pos.z < sizeZ) return true;
-        Debug.LogWarning("Invalid block position");
+        //Debug.LogWarning("Invalid block position");
         return false;
     }
-    
+
+    public static float GetDistanceBetweenCells(Cell3d cell1, Cell3d cell2)
+    {
+        return Vector3Int.Distance(cell1.GetPosition(), cell2.GetPosition());
+    }
     
     #endregion
 }

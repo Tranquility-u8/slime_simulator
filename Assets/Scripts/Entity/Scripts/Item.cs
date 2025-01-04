@@ -28,7 +28,7 @@ public class Item : Entity
         float c = (120 + cube.z * 25)/ 255f;
         sr.color = new Color(c, c, c);
         
-        UpdateSortingOrder();
+        UpdateSpriteSortingOrder();
     }
     
     public bool IsDropped => itemState == ItemState.Dropped;

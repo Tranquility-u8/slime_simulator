@@ -9,7 +9,10 @@ using UnityEngine;
 public class Zone : Grid3d<Cube>
 {
     #region members
-    
+
+    [JsonProperty]
+    public bool hasGravity = false;
+
     [JsonProperty]
     private List<GridBase> grids;
     
@@ -53,7 +56,6 @@ public class Zone : Grid3d<Cube>
             return false;
         }
         c.ItemInstalled = item;
-        item.cube = c;
         return true;
     }
 
@@ -63,7 +65,6 @@ public class Zone : Grid3d<Cube>
         if(!IsValidCell(x, y, z)) return false;
         
         grid[x, y, z].ItemInstalled = item;
-        item.cube = grid[x, y, z];
         return true;
     }
     
@@ -105,7 +106,21 @@ public class Zone : Grid3d<Cube>
         if(charactersDict.ContainsKey(_character.name))
             charactersDict.Remove(_character.name);
     }
-    
+
+    public bool MoveCharacterTo(Character character, Vector3Int destination)
+    {
+        if(!IsValidCell(destination)) return false;
+        
+        Cube origin = character.cube;
+        Grid(destination).Character = character;
+        origin.Character = null;
+        return true;
+    }
+
+    public Cube Grid(Vector3Int position)
+    {
+        return grid[position.x, position.y, position.z];
+    }
     #endregion
     
 }

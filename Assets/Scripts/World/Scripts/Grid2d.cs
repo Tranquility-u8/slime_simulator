@@ -15,7 +15,7 @@ public class Grid2d<T> : GridBase where T : Cell2d
     [JsonProperty] 
     public int sizeY;
     
-    [JsonProperty]
+    [JsonIgnore]
     public T[,] grid;
     
     #endregion

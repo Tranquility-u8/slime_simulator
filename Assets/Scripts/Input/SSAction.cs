@@ -23,6 +23,7 @@ public enum SSAction
     Interact,       // Interact with sth
     Pick,           // Pick up sth
     Fire,           // Shoot on sbd
+    Melee,
     
     OpenMainMenu = 20,
     OpenInventory,

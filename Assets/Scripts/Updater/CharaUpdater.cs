@@ -13,7 +13,7 @@ public class CharaUpdater : BaseUpdater
     
     public override void FixedUpdate()
     {
-        foreach (var term in Core.Instance.currentZone.charactersDict)
+        foreach (var term in Core.Instance.game.CurrentZone.charactersDict)
         {
             Character character = term.Value;
             if (!character.IsPC)
@@ -25,9 +25,8 @@ public class CharaUpdater : BaseUpdater
 
     public void UpdateCharasActionTimer(int actionPoint = 1)
     {
-        foreach (var term in Core.Instance.currentZone.charactersDict)
+        foreach (var term in Core.Instance.game.CurrentZone.charactersDict)
         {
-            Debug.Log(term.Value.name);
             Character character = term.Value;
             if (!character.IsPC)
             {
