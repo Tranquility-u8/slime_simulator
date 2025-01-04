@@ -23,7 +23,8 @@ public class Zone : Grid3d<Cube>
 
     #region methods
     
-    public Zone(string _name, int _sizeX = 64, int _sizeY = 64, int _sizeZ = 2)
+    
+    public Zone(string _name = "default", int _sizeX = 64, int _sizeY = 64, int _sizeZ = 2)
     {
         name = _name;
         sizeX = _sizeX;
@@ -117,6 +118,32 @@ public class Zone : Grid3d<Cube>
         return true;
     }
 
+    public void OnLoadAfter()
+    {
+        charactersDict = new Dictionary<string, Character>();
+        for (int i = 0; i < sizeX; i++)
+        {
+            for (int j = 0; j < sizeY; j++)
+            {
+                for (int k = 0; k < sizeZ; k++)
+                {
+                    Cube cube = grid[i, j, k];
+                    if (cube.IsOccupied)
+                    {
+                        charactersDict[cube.Character.name] = cube.Character;
+                        cube.Character.zone = this;
+                        cube.Character.cube = cube;
+                        if (cube.Character.name == "Slime")
+                        {
+                            Core.Instance.game.PC = cube.Character;
+                        }
+                    }
+                }
+                            
+            }
+        }
+    }
+    
     public Cube Grid(Vector3Int position)
     {
         return grid[position.x, position.y, position.z];

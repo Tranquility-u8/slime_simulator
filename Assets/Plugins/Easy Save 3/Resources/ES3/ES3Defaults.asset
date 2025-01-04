@@ -28,7 +28,7 @@ MonoBehaviour:
     safeReflection: 1
     memberReferenceMode: 0
     referenceMode: 2
-    serializationDepthLimit: 64
+    serializationDepthLimit: 128
     assemblyNames:
     - Assembly-CSharp
     - Assembly-CSharp-firstpass

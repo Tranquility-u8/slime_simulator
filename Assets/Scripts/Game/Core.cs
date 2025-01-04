@@ -76,6 +76,7 @@ public class Core : Singleton<Core>
 
         // Init terrain
         Debug.Log("Create terrain");
+        
         for (int i = 0; i < 20; i++)
         {
             for (int j = 0; j < 20; j++)
@@ -83,6 +84,7 @@ public class Core : Singleton<Core>
                 this.game.CurrentZone.PlaceItem(new Item("Grass"), i, j, 0);
             }
         }
+        
         this.game.CurrentZone.PlaceItem(new Item("Grass"), 4, 3, 1);
         this.game.CurrentZone.PlaceItem(new Item("Grass"), 5, 3, 1);
         
@@ -90,7 +92,7 @@ public class Core : Singleton<Core>
         Debug.Log("Create pc");
         Character pc = new PC();
         this.game.CurrentZone.AddCharacter(pc,4, 1, 1);
-
+        if(pc.cube == null) Debug.LogWarning("No c set");
         pc.Speed = 150;
         
         // Init witch
@@ -109,7 +111,6 @@ public class Core : Singleton<Core>
         // Render zone
         this.game.CurrentZone.Render();
         
-        InputManager.Instance.Init(pc);
         this.game.Init(pc);
         
         this.gameUpdater = this.game.GameUpdater;
@@ -152,11 +153,13 @@ public class Core : Singleton<Core>
     public void LoadGame()
     {
         ClearGameView(this.game);
-        Game newGame = (Game)ES3.Load("test", game);
+        this.game = (Game)ES3.Load("test", game);
         if (game != null)
         {
             Debug.Log("Load game");
-            this.game.UpdateView(); 
+            game.CurrentZone = game.World.atlases[0].zones["Village"];
+            game.CurrentZone.OnLoadAfter();
+            this.game.UpdateView();
         }
     }
 

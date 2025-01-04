@@ -15,17 +15,22 @@ public class Entity
 
     [Header("Position")] 
     
+    [ES3NonSerializable]
     public Zone zone;
     
+    [ES3NonSerializable]
     public Cube cube;
     
     public Vector3Int Position => new Vector3Int(cube.x, cube.y, cube.z);
     
+    [ES3NonSerializable]
     public bool IsOnZone => zone != null;
     
     [Header("Generated while gaming")]
+    [ES3NonSerializable]
     public GameObject gameObject;
     
+    [ES3NonSerializable]
     public SpriteRenderer sr;
     
     #endregion

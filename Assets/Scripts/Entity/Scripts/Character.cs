@@ -9,6 +9,7 @@ public class Character : Entity
     
     protected AIBase ai;
 
+    [ES3NonSerializable]
     public AIBase AI
     {
         set
@@ -18,12 +19,11 @@ public class Character : Entity
         }
     }
     
+    [ES3NonSerializable]
     public SpriteRenderer ShadowSr;
-    
-    [JsonProperty]
+
     public CharacterTypeSO characterType;
     
-    [JsonProperty]
     private float speed;
 
     public float Speed
@@ -48,6 +48,12 @@ public class Character : Entity
     #endregion
 
     #region methods
+    
+    public Character()
+    {
+        this.AI = new AIBase();
+    }
+    
     
     public Character(string _name)
     {
@@ -85,6 +91,7 @@ public class Character : Entity
     public override void Render(int _renderSize)
     {
         gameObject = EntityData.Instantiate(characterType.prefab);
+        if(gameObject == null) Debug.LogWarning("Character object not instantiated");
         sr = gameObject.GetComponent<SpriteRenderer>();
         ShadowSr = gameObject.transform.Find("shadowPivot").Find("shadow").GetComponent<SpriteRenderer>();   // Bad code
         

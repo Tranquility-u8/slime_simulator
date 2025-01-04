@@ -12,8 +12,7 @@ public class Atlas : Grid2d<Tile>
     #region members
     
     public Vector2 size;
-
-    [ES3NonSerializable]
+    
     public Dictionary<string, Zone> zones = new Dictionary<string, Zone>();
 
     #endregion

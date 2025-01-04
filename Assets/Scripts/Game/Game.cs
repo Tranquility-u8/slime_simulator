@@ -24,7 +24,7 @@ public class Game
     
     public Zone CurrentZone { get; set; }
     
-    public DateTime Date { get; set; }
+//    public DateTime Date { get; set; }
     
     public WeatherType currentWeather;
     
@@ -54,7 +54,7 @@ public class Game
             Debug.LogWarning("Null pc");
             return;
         }
-        
+        PC = _pc;
         GameUpdater = new GameUpdater(_pc);
         IsInitialized = true;
     }

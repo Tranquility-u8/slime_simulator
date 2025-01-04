@@ -11,6 +11,10 @@ public class Item : Entity
     [JsonProperty]
     public ItemState itemState;
     
+    public Item()
+    {
+    }
+    
     public Item(string _name)
     {
         itemType = EntityData.Instance.GetItemTypeByName(_name);

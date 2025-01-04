@@ -24,7 +24,8 @@ public class Cube : Cell3d
 
     #region methods
 
-    public Cube(int _x, int _y, int _z)
+    
+    public Cube(int _x = 0, int _y = 0, int _z = 0)
     {
         x = _x;
         y = _y;
@@ -48,9 +49,6 @@ public class Cube : Cell3d
     public void RenderCharacter(int renderSize)
     {
         if(!this.IsOccupied) return;
-        
-        Character character = this.Character;
-        if(character == null) return;
         character.Render(renderSize);
     }
     

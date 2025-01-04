@@ -15,7 +15,6 @@ public class InputManager : Singleton<InputManager>
 {
     #region members
     
-    private Character pc;
     private Transform trans;
     
     public bool isInitialized = false;
@@ -104,18 +103,6 @@ public class InputManager : Singleton<InputManager>
         lastSSAction = currentSSAction;
         currentSSAction = newAction;
         ConductAction(currentSSAction);
-    }
-    
-    public void Init(Character _pc)
-    {
-        if (_pc == null)
-        {
-            Debug.LogWarning("Null pc");
-            return;
-        }
-        pc = _pc;
-        trans = pc.gameObject.transform;
-        isInitialized = true;
     }
     
     #endregion
@@ -266,7 +253,7 @@ public class InputManager : Singleton<InputManager>
     {
         if (action >= SSAction.MoveUp && action <= SSAction.MoveLeft)
         {
-            ActionHelper.MoveTowards(pc, (int)action - (int)SSAction.MoveUp);
+            ActionHelper.MoveTowards(Core.Instance.game.PC, (int)action - (int)SSAction.MoveUp);
             Core.Instance.gameUpdater.FixedUpdate();
             return;
         }
