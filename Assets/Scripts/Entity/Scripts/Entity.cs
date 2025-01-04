@@ -33,6 +33,9 @@ public class Entity
     [ES3NonSerializable]
     public SpriteRenderer sr;
     
+    [ES3NonSerializable]
+    public SpriteRenderer shadowSr;
+    
     #endregion
     
     #region methods

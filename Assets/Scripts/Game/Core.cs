@@ -88,11 +88,12 @@ public class Core : Singleton<Core>
         this.game.CurrentZone.PlaceItem(new Item("Grass"), 4, 3, 1);
         this.game.CurrentZone.PlaceItem(new Item("Grass"), 5, 3, 1);
         
+        this.game.CurrentZone.PlaceItem(new Item("Tree"), 1, 2, 1);
+        
         // Init PC (Slime)
         Debug.Log("Create pc");
         Character pc = new PC();
         this.game.CurrentZone.AddCharacter(pc,4, 1, 1);
-        if(pc.cube == null) Debug.LogWarning("No c set");
         pc.Speed = 150;
         
         // Init witch
@@ -106,7 +107,7 @@ public class Core : Singleton<Core>
         Debug.Log("Create paragon");
         Character paragon = new Character("Paragon");
         paragon.AI = new AI_Monster();
-        this.game.CurrentZone.AddCharacter(paragon, 1, 1, 1);
+        this.game.CurrentZone.AddCharacter(paragon, 0, 0, 1);
         
         // Render zone
         this.game.CurrentZone.Render();

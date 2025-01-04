@@ -22,17 +22,31 @@ public class Item : Entity
     
     public override void Render(int _renderSize)
     {
-
-        gameObject = new GameObject();
-        gameObject.transform.SetParent(EntityData.Instance.transform);
-        gameObject.transform.position = new Vector3Int(cube.x * _renderSize, (cube.y + 1) * _renderSize, 0);
+        if(gameObject != null) return;
+        gameObject = EntityData.Instantiate(itemType.prefab);
         
-        sr = gameObject.AddComponent<SpriteRenderer>();
-        sr.sprite = itemType.sprite;
         float c = (120 + cube.z * 25)/ 255f;
+        sr = gameObject.GetComponent<SpriteRenderer>();
         sr.color = new Color(c, c, c);
         
-        UpdateSpriteSortingOrder();
+        if(itemType.CanCastShadow)
+            shadowSr = gameObject.transform.Find("shadowPivot").Find("shadow").GetComponent<SpriteRenderer>();   // Bad code    
+        
+        UpdateSprite(_renderSize);
+    }
+    
+    protected override void UpdateSpritePosition(int _renderSize)
+    {
+        Transform t = gameObject.transform;
+        t.position = new Vector3(t.position.x + cube.x * _renderSize, t.position.y + (cube.y + 1) * _renderSize, 0);
+        t.SetParent(EntityData.Instance.transform);
+    }
+    
+    protected override void UpdateSpriteSortingOrder()
+    {
+        sr.sortingOrder = cube.y * -1 + cube.z * 1000 - 5000;
+        if(itemType.CanCastShadow)
+            shadowSr.sortingOrder = cube.y * -1 + cube.z * 1000 - 5050;
     }
     
     public bool IsDropped => itemState == ItemState.Dropped;

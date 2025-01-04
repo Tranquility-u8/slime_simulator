@@ -12,7 +12,6 @@ public class CharacterTypeSO : ScriptableObject
     public string typeName;
     
     [JsonProperty]
-    [Tooltip("Sprite for normal state")]
     public Sprite sprite;
 
     [JsonProperty]

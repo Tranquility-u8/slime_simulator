@@ -7,14 +7,16 @@ using UnityEngine.Serialization;
 public class ItemTypeSO : ScriptableObject
 {
     #region members
+
+    [JsonProperty] 
+    public bool CanCastShadow;
     
     [JsonProperty]
     public string typeName;
-    
-    [JsonProperty]
-    [Tooltip("Sprite for normal state")]
-    public Sprite sprite;
 
+    [JsonProperty]
+    public GameObject prefab;
+    
     [JsonProperty] 
     [Tooltip("Sprite for other state")]
     public List<SpriteDictionaryEntry> spriteEntries = new List<SpriteDictionaryEntry>(); 

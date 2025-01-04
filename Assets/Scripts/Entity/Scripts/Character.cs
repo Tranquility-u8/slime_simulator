@@ -19,9 +19,6 @@ public class Character : Entity
         }
     }
     
-    [ES3NonSerializable]
-    public SpriteRenderer ShadowSr;
-
     public CharacterTypeSO characterType;
     
     private float speed;
@@ -90,18 +87,21 @@ public class Character : Entity
     
     public override void Render(int _renderSize)
     {
+        if(gameObject != null) return;
         gameObject = EntityData.Instantiate(characterType.prefab);
-        if(gameObject == null) Debug.LogWarning("Character object not instantiated");
+
         sr = gameObject.GetComponent<SpriteRenderer>();
-        ShadowSr = gameObject.transform.Find("shadowPivot").Find("shadow").GetComponent<SpriteRenderer>();   // Bad code
+        shadowSr = gameObject.transform.Find("shadowPivot").Find("shadow").GetComponent<SpriteRenderer>();   // Bad code
         
         UpdateSprite(_renderSize);
+        gameObject.SetActive(false);  
+        gameObject.SetActive(true);  
     }
     
     protected override void UpdateSpriteSortingOrder()
     {
-        base.UpdateSpriteSortingOrder();
-        ShadowSr.sortingOrder = cube.y * -1 + cube.z * 1000 - 5050;
+        sr.sortingOrder = cube.y * -1 + cube.z * 1000 - 5000;
+        shadowSr.sortingOrder = cube.y * -1 + cube.z * 1000 - 5050;
     }
     
     public virtual bool IsPC
