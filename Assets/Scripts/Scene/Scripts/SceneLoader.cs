@@ -8,7 +8,7 @@ using System.IO;
 /// Use this basic helper for loading scenes by name, index, etc.
 /// 
 /// </summary>
-public class SceneLoader : MonoBehaviour
+public class SceneLoader : Singleton<SceneLoader>
 {
     // Fields
     [Header("Listen to Event Channels")]
@@ -153,6 +153,9 @@ public class SceneLoader : MonoBehaviour
         LoadScene(1);
         InputManager.Instance.inputMode = InputMode.Waiting;
         UIManager.Instance.rootLayer.FindLayer("TitleLayer").Hide();
+        UIManager.Instance.rootLayer.FindLayer("SlotLayer").Show();
+        UIManager.Instance.rootLayer.FindLayer("DragLayer").Show();
+
     }
     
 }

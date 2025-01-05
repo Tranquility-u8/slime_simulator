@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 319e587d5d644a6ca08f10f0b443f1c9, type: 3}
+  m_Name: Grym
+  m_EditorClassIdentifier: 
+  typeName: Grym
+  sprite: {fileID: 1445902955, guid: 7b36722b97d7e2d4aa0bdf0b9d0b3633, type: 3}
+  prefab: {fileID: 8602987177085305450, guid: 52472409ff96e4e428a22c5858f5d3fe, type: 3}
+  spriteEntries: []

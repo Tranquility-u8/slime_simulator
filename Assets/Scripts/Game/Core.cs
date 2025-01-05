@@ -90,24 +90,30 @@ public class Core : Singleton<Core>
         
         this.game.CurrentZone.PlaceItem(new Item("Tree"), 1, 2, 1);
         
-        // Init PC (Slime)
+        // Create PC (Slime)
         Debug.Log("Create pc");
         Character pc = new PC();
         this.game.CurrentZone.AddCharacter(pc,4, 1, 1);
         pc.Speed = 150;
         
-        // Init witch
+        // Create witch
         /*
         Debug.Log("Create witch");
         Character witch = new Character("Witch");
         this.currentZone.AddCharacter(witch, 4, 2, 1);
         */
         
-        // Init paragon
+        // Create paragon
         Debug.Log("Create paragon");
         Character paragon = new Character("Paragon");
         paragon.AI = new AI_Monster();
         this.game.CurrentZone.AddCharacter(paragon, 0, 0, 1);
+        
+        // Create grym
+        Debug.Log("Create grym");
+        Character grym = new Character("Grym");
+        grym.AI = new AI_Monster();
+        this.game.CurrentZone.AddCharacter(grym, 2, 4, 1);
         
         // Render zone
         this.game.CurrentZone.Render();

@@ -11,7 +11,7 @@ public class Layer : MonoBehaviour
 
     private void Awake()
     {
-        Layer[] children = gameObject.GetComponentsInChildren<Layer>();
+        Layer[] children = gameObject.GetComponentsInChildren<Layer>(true);
         foreach (var subLayer in children)
         {
             subLayers.Add(subLayer);
@@ -25,7 +25,7 @@ public class Layer : MonoBehaviour
 
     public virtual void Show()  
     {  
-        gameObject.SetActive(true);  
+        gameObject.SetActive(true); 
     }  
     
     public virtual void Hide()  

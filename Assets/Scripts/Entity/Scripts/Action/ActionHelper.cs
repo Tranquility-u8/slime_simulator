@@ -9,10 +9,22 @@ public static class ActionHelper
         new Vector3Int(0, -1, 0),
         new Vector3Int(-1, 0, 0),
     };  // Clockwise from north
+
+    public static void UpdateFlips(this Character character, bool isFlipped)
+    {
         
+        Transform t = character.gameObject.transform;
+        t.localScale = new Vector3(isFlipped ? -t.localScale.x: t.localScale.x, t.localScale.y, t.localScale.z);
+    }
+    
     public static void MoveRandom(this Character character)
     {
         int dir = Random.Range(0, 3);
+        if(dir == 1)
+            UpdateFlips(character, false);
+        else if(dir == 3)
+            UpdateFlips(character, true);
+        
         Vector3Int vec = DirectionVec3[dir];
         //character.gameObject.transform.Translate(DirectionVec3[dir]);
         character.zone.MoveCharacterTo(character, character.cube.GetPosition() + vec);
@@ -58,12 +70,14 @@ public static class ActionHelper
     {
         character.zone.MoveCharacterTo(character, character.cube.GetPosition() + Vector3Int.left);
         character.UpdateSprite();
+        UpdateFlips(character, true);
     }
     
     public static void MoveRight(this Character character)
     {
         character.zone.MoveCharacterTo(character, character.cube.GetPosition() + Vector3Int.right);
         character.UpdateSprite();
+        UpdateFlips(character, false);
     }
     
     public static void MoveUp(this Character character)

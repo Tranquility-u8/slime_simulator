@@ -31,12 +31,15 @@ public class UIManager : Singleton<UIManager>
     protected override void Awake()
     {
         base.Awake();
+        rootLayer = gameObject.GetComponent<Layer>();
+        
         //DontDestroyOnLoad(this);
         //equipmentContainer = equipmentBar.GetComponentInChildren<ContainerUI>();
     }
 
     private void Start()
     {
+        currentLayer = rootLayer.FindLayer("ButtonLayer");
     }
 
     private void Update()

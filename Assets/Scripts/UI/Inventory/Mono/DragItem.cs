@@ -38,8 +38,6 @@ public class DragItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         {
             if (InventoryManager.Instance.CheckInAll(eventData.position))
             {
-                
-
                 if (eventData.pointerEnter.gameObject.GetComponent<SlotHolder>())
                 {
                     targetHolder = eventData.pointerEnter.gameObject.GetComponent<SlotHolder>();
